@@ -1,0 +1,1020 @@
+***************************************************
+*                                                 *
+*        APUNTES DEL CURSO DE DJANGO Parte 1      *
+*                                                 *
+***************************************************
+
+ÍNDICE
+======
+
+1. Creación y Configuración del Proyecto
+    1.1. Plan de Desarrollo de Django
+    1.2. Entorno Virtual e Instalación
+    1.3. Creación del Proyecto
+    1.4. Configuración Inicial (Idioma y Base de Datos)
+    1.5. Migración Inicial
+
+2. App 1 [Core] - Vistas y Templates
+    2.1. Creación de la App Core
+    2.2. Creación de Vistas
+    2.3. Configuración de URLs
+    2.4. Extendiendo la App con más Páginas
+    2.5. Introducción a los Templates
+    2.6. Herencia de Plantillas
+    2.7. El Template Tag `url`
+
+3. Integración del Frontend
+    3.1. Uniendo Frontend y Backend (Ficheros Estáticos)
+    3.2. Creando una Cabecera Dinámica
+
+4. App 2 [Portfolio] - Modelos y Admin
+    4.1. Creación de la App Portfolio
+    4.2. Definición del Modelo `Project`
+    4.3. Migraciones del Modelo
+    4.4. Panel de Administrador y Superusuario
+    4.5. Personalización del Admin
+    4.6. Configuración de Ficheros Media
+
+5. Patrón MVT en Práctica
+    5.1. Vista y Template para el Portfolio
+    5.2. Mostrando los Proyectos en el Template
+    5.3. Añadir Enlace a los Proyectos
+
+
+======================================================================
+CONTENIDO DETALLADO
+======================================================================
+
+
+1. CREACIÓN Y CONFIGURACIÓN DEL PROYECTO
+----------------------------------------
+
+1.1. Plan de Desarrollo de Django
+*********************************
+- El curso está desarrollado con Django 2.0 (soporte hasta Dic 2019).
+- Django 2.2 es LTS (Long Term Support) con soporte hasta 2022.
+
+1.2. Entorno Virtual e Instalación
+**********************************
+- Se recomienda crear un entorno virtual (ej. con Conda y Python 3.6.4).
+- Una vez activado, instalar Django:
+(django2) pip install django==2.1.3
+
+1.3. Creación del Proyecto
+**************************
+- Utilizar `django-admin` para crear el proyecto:
+(django2) django-admin startproject webpersonal
+
+1.4. Configuración Inicial (Idioma y Base de Datos)
+***************************************************
+- Poner en marcha el servidor de desarrollo para probar:
+(django2) python manage.py runserver
+
+- Cambiar el idioma en `webpersonal/settings.py`:
+# webpersonal/settings.py
+LANGUAGE_CODE = 'es'
+
+- La configuración de la base de datos (por defecto SQLite3) está en `settings.py`:
+# webpersonal/settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+1.5. Migración Inicial
+**********************
+- Crear la base de datos inicial ejecutando el comando `migrate`:
+(django2) python manage.py migrate
+
+
+2. APP 1 [CORE] - VISTAS Y TEMPLATES
+------------------------------------
+
+2.1. Creación de la App Core
+****************************
+- Crear una app con el comando `startapp`:
+(django2) python manage.py startapp core
+
+2.2. Creación de Vistas
+***********************
+- Una vista es una función de Python que recibe una petición (`request`) y devuelve una respuesta.
+- Crear una vista para la portada en `core/views.py`:
+# core/views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("<h1>Mi Web Personal</h1><h2>Portada</h2>")
+
+2.3. Configuración de URLs
+**************************
+- Enlazar una URL a una vista en `webpersonal/urls.py`:
+# webpersonal/urls.py
+from django.contrib import admin
+from django.urls import path
+from core import views
+
+urlpatterns = [
+    path('', views.home, name="home"),
+    path('admin/', admin.site.urls),
+]
+
+2.4. Extendiendo la App con más Páginas
+***************************************
+- Crear las vistas para las nuevas páginas en `core/views.py`:
+# core/views.py
+def about(request):
+    return HttpResponse("<h1>Mi Web Personal</h1><h2>Acerca de</h2>")
+    
+def portfolio(request):
+    return HttpResponse("<h1>Mi Web Personal</h1><h2>Portafolio</h2>")
+
+def contact(request):
+    return HttpResponse("<h1>Mi Web Personal</h1><h2>Contacto</h2>")
+
+- Añadir las URLs correspondientes en `webpersonal/urls.py`:
+# webpersonal/urls.py
+urlpatterns = [
+    path('', views.home, name="home"),
+    path('about/', views.about, name="about"),
+    path('portfolio/', views.portfolio, name="portfolio"),
+    path('contact/', views.contact, name="contact"),
+    path('admin/', admin.site.urls),
+]
+
+2.5. Introducción a los Templates
+*********************************
+- Registrar la app en `webpersonal/settings.py` para que Django encuentre sus templates:
+# webpersonal/settings.py
+INSTALLED_APPS = [
+    # ...
+    'core',
+]
+
+- Modificar las vistas para que rendericen un template en lugar de devolver `HttpResponse`:
+# core/views.py
+from django.shortcuts import render
+
+def home(request):
+    return render(request, "core/home.html")
+
+def about(request):
+    return render(request, "core/about.html")
+# ... y así para el resto
+
+2.6. Herencia de Plantillas
+***************************
+- Crear una plantilla base (`base.html`) con la estructura común.
+- Usar `{% block content %}{% endblock %}` para definir una zona de contenido variable.
+<!-- core/templates/core/base.html -->
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Mi Web Personal</h1>
+    <p>Este es el menú...</p>
+    {% block content %}{% endblock %}
+    <p>Este es el footer...</p>
+</body>
+</html>
+
+- Las plantillas "hijas" extienden de la base y rellenan los bloques.
+<!-- core/templates/core/home.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h2>Portada</h2>
+    <p>Este es el contenido de la portada...</p>
+{% endblock %}
+
+2.7. El Template Tag `url`
+**************************
+- Utilizar el tag `{% url 'nombre_de_la_url' %}` para generar URLs dinámicamente, evitando hardcodearlas.
+<!-- core/templates/core/base.html -->
+<nav>
+    <ul>
+        <li><a href="{% url 'home' %}">Portada</a></li>
+        <li><a href="{% url 'about' %}">Acerca de</a></li>
+        <li><a href="{% url 'portfolio' %}">Portafolio</a></li>
+        <li><a href="{% url 'contact' %}">Contacto</a></li>
+    </ul>
+</nav>
+
+
+3. INTEGRACIÓN DEL FRONTEND
+---------------------------
+
+3.1. Uniendo Frontend y Backend (Ficheros Estáticos)
+*****************************************************
+- Para usar ficheros estáticos (CSS, JS, imágenes), primero se carga el tag en la plantilla:
+<!-- core/templates/core/base.html -->
+{% load static %}
+
+- Luego, se referencian los ficheros usando el tag `static`:
+<header style="background-image: url('{% static 'core/img/home-bg.jpg' %}')">
+
+3.2. Creando una Cabecera Dinámica
+**********************************
+- Definir más bloques en la plantilla base para partes que cambian, como el fondo o los títulos de la cabecera.
+<!-- core/templates/core/base.html -->
+<header style="background-image: url('{% block background %}{% endblock %}')">
+    <div class="site-heading">
+        {% block headers %}{% endblock %}
+    </div>
+</header>
+
+- Rellenar estos bloques en las plantillas hijas:
+<!-- core/templates/core/home.html -->
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Portada{% endblock %}
+{% block background %}{% static 'core/img/home-bg.jpg' %}{% endblock %}
+{% block headers %}
+    <h1>Héctor Costa</h1>
+    <span class="subheading">Ingeniero y programador web</span>
+{% endblock %}
+
+
+4. APP 2 [PORTFOLIO] - MODELOS Y ADMIN
+--------------------------------------
+
+4.1. Creación de la App Portfolio
+*********************************
+- Crear la nueva app:
+(django2) python manage.py startapp portfolio
+
+- Instalar la librería Pillow, necesaria para manejar campos de imagen:
+(django2) pip install Pillow
+
+4.2. Definición del Modelo `Project`
+************************************
+- En `portfolio/models.py`, definir la estructura de los datos para un proyecto.
+# portfolio/models.py
+from django.db import models
+
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    image = models.ImageField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+4.3. Migraciones del Modelo
+***************************
+- Registrar la app `portfolio` en `INSTALLED_APPS`.
+- Crear las migraciones para el nuevo modelo y aplicarlas a la base de datos.
+(django2) python manage.py makemigrations
+(django2) python manage.py migrate
+
+4.4. Panel de Administrador y Superusuario
+******************************************
+- Crear un superusuario para acceder al panel de admin (/admin):
+(django2) python manage.py createsuperuser
+
+- Registrar el modelo `Project` en `portfolio/admin.py` para que sea gestionable desde el panel:
+# portfolio/admin.py
+from django.contrib import admin
+from .models import Project
+
+admin.site.register(Project)
+
+4.5. Personalización del Admin
+******************************
+- Se puede personalizar cómo se muestran los modelos en el admin.
+- Por ejemplo, para hacer campos de solo lectura:
+# portfolio/admin.py
+class ProjectAdmin(admin.ModelAdmin):
+    readonly_fields = ('created', 'updated')
+
+admin.site.register(Project, ProjectAdmin)
+
+4.6. Configuración de Ficheros Media
+************************************
+- Configurar en `webpersonal/settings.py` dónde se guardarán los ficheros subidos por los usuarios (media):
+# webpersonal/settings.py
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+- Añadir la configuración de URL para servir estos ficheros en modo de desarrollo:
+# webpersonal/urls.py
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+5. PATRÓN MVT EN PRÁCTICA
+-------------------------
+
+5.1. Vista y Template para el Portfolio
+***************************************
+- La vista `portfolio` se encarga de obtener los datos del Modelo.
+- Ahora, la vista y el template pertenecerán a la app `portfolio`.
+# portfolio/views.py
+from django.shortcuts import render
+from .models import Project
+
+def portfolio(request):
+    projects = Project.objects.all()
+    return render(request, "portfolio/portfolio.html", {'projects':projects})
+
+5.2. Mostrando los Proyectos en el Template
+*******************************************
+- En el Template, se usa un bucle para recorrer la lista de proyectos (`projects`) pasada desde la vista.
+<!-- portfolio/templates/portfolio/portfolio.html -->
+{% extends 'core/base.html' %}
+{% block content %}
+    {% for project in projects %}
+        <div class="row project">  	
+            <img class="img-fluid" src="{{project.image.url}}" alt="">
+            <h2 class="section-heading title">{{project.title}}</h2>   
+            <p>{{project.description}}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+5.3. Añadir Enlace a los Proyectos
+**********************************
+- Modificar el modelo `Project` para añadir un campo opcional para un enlace.
+# portfolio/models.py
+link = models.URLField(null=True, blank=True, verbose_name="Dirección Web")
+
+- Añadir metadatos al modelo para mejorar su presentación en el admin:
+class Meta:
+    verbose_name = "proyecto"
+    verbose_name_plural = "proyectos"
+    ordering = ["-created"]
+
+- Crear y aplicar las nuevas migraciones para la app `portfolio`.
+(django2) python manage.py makemigrations portfolio
+(django2) python manage.py migrate portfolio
+
+- Actualizar el template para mostrar el enlace si existe:
+<!-- portfolio/templates/portfolio/portfolio.html -->
+{% if project.link %}
+    <p><a href="{{project.link}}">Más información</a></p>
+{% endif %}
+
+***************************************************
+*                                                 *
+*        APUNTES DEL CURSO DE DJANGO 2            *
+*                                                 *
+***************************************************
+
+ÍNDICE
+======
+
+1. Preparación de la App [Core]
+    1.1. Creación del Proyecto y la App
+    1.2. Creación de Vistas y URLs Iniciales
+
+2. Organización y Estructura del Proyecto
+    2.1. Organizando las URLs por App
+    2.2. Fusión del Frontend y el Backend
+    2.3. Resaltando la Sección Actual en el Menú
+
+3. Tercera App [Services]
+    3.1. Creación del Modelo y Configuración del Admin
+    3.2. Creación de la Vista y el Template
+
+4. Cuarta App [Blog]
+    4.1. Modelos con Relaciones (ForeignKey, ManyToMany)
+    4.2. Personalización Avanzada del Administrador
+    4.3. Creando las Vistas del Blog (Parte 1)
+    4.4. Creando las Vistas del Blog (Parte 2)
+
+5. Quinta App [Social]
+    5.1. Creación del Modelo y Admin
+    5.2. Procesadores de Contexto
+
+6. Sexta App [Pages]
+    6.1. Creación del Modelo, Admin y Vistas
+    6.2. Creando un Template Tag Personalizado
+    6.3. Ordenación y Edición de Páginas
+
+7. Personalización del Administrador (Editor WYSIWYG)
+    7.1. Integración de CKEditor
+
+8. Séptima App [Contact] - Formularios
+    8.1. Creación de la App y Diseño del Formulario
+    8.2. Procesado y Validación del Formulario
+    8.3. Fusionando el Formulario con el Frontend
+    8.4. Enviando Emails
+    8.5. Configuración de Gmail para Envío de Correos
+
+9. Personalización del Administrador (Permisos)
+    9.1. Creación de Grupos y Permisos
+    9.2. Personalización del Admin según el Grupo de Usuario
+
+
+======================================================================
+CONTENIDO DETALLADO
+======================================================================
+
+
+1. PREPARACIÓN DE LA APP [CORE]
+---------------------------------
+
+1.1. Creación del Proyecto y la App
+***********************************
+- Objetivo: Preparar el terreno para el proyecto "webempresa".
+
+- Crear un proyecto Django:
+(django2) django-admin startproject webempresa
+
+- Añadir una app "Core":
+(django2) python manage.py startapp core
+
+
+1.2. Creación de Vistas y URLs Iniciales
+****************************************
+- Se crea una vista para cada página devolviendo un HttpResponse simple.
+- Páginas a crear:
+    - Inicio (home/)
+    - Historia (about/)
+    - Servicios (services/)
+    - Visítanos (store/)
+    - Contacto (contact/)
+    - Blog (blog/)
+    - Sample (sample/)
+
+- Contenido de `core/views.py`:
+from django.shortcuts import render, HttpResponse
+
+def home(request):
+    return HttpResponse("Inicio")
+def about(request):
+    return HttpResponse("Historia")
+def services(request):
+    return HttpResponse("Servicios")
+def store(request):
+    return HttpResponse("Visítanos")
+def contact(request):
+    return HttpResponse("Contacto")
+def blog(request):
+    return HttpResponse("Blog")
+def sample(request):
+    return HttpResponse("Sample")
+
+- Configuración de `webempresa/urls.py`:
+from django.contrib import admin
+from django.urls import path
+from core import views
+
+urlpatterns = [
+    path('', views.home, name="home"),
+    path('about/', views.about, name="about"),
+    path('services/', views.services, name="services"),
+    path('store/', views.store, name="store"),
+    path('contact/', views.contact, name="contact"),
+    path('blog/', views.blog, name="blog"),
+    path('sample/', views.sample, name="sample"),
+    path('admin/', admin.site.urls),
+]
+
+
+2. ORGANIZACIÓN Y ESTRUCTURA DEL PROYECTO
+------------------------------------------
+
+2.1. Organizando las URLs por App
+*********************************
+- Para evitar un archivo `urls.py` del proyecto desordenado, se crean configuraciones de URL para cada app.
+
+- Crear un nuevo fichero `urls.py` en la app `core`.
+
+- Mover las URLs de `core` desde el `urls.py` del proyecto al nuevo `core/urls.py`:
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name="home"),
+    path('about/', views.about, name="about"),
+    path('services/', views.services, name="services"),
+    path('store/', views.store, name="store"),
+    path('contact/', views.contact, name="contact"),
+    path('blog/', views.blog, name="blog"),
+    path('sample/', views.sample, name="sample"),
+]
+
+- Importar las URLs de la app en el `webempresa/urls.py` del proyecto usando `include`:
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('', include('core.urls')), # La raíz vacía para que coincida con la configuración anterior
+    path('admin/', admin.site.urls),
+]
+
+
+2.2. Fusión del Frontend y el Backend
+*************************************
+- Objetivo: Integrar las maquetas HTML en Django.
+
+- Crear directorios para ficheros estáticos y templates en la app `core`:
+    - `static/core/` (copiar css, js, img, etc.)
+    - `templates/core/` (copiar los .html)
+
+- Añadir la app `core` a `INSTALLED_APPS` en `settings.py`.
+
+- Modificar las vistas para renderizar templates en lugar de `HttpResponse`:
+# core/views.py
+def home(request):
+    return render(request, "core/home.html")
+# (Hacer lo mismo para el resto de vistas)
+
+- Cargar ficheros estáticos en los templates. Primero, cargar el tag:
+{% load static %}
+
+- Adaptar las URLs de los ficheros estáticos:
+<link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
+<img src="{% static 'core/img/intro.jpg' %}" alt="">
+
+- Crear una plantilla base (`base.html`) para las partes comunes (menú, pie de página).
+
+- Usar la herencia de plantillas. En `base.html` se define un bloque para el contenido variable:
+{% block content %} {% endblock %}
+
+- En las plantillas hijo (`home.html`, `about.html`, etc.):
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Título de la página{% endblock %}
+
+{% block content %}
+    <!-- Contenido específico de la página -->
+{% endblock %}
+
+- Usar el template tag `url` para los enlaces del menú en `base.html`:
+<a class="nav-link" href="{% url 'home' %}">Inicio</a>
+<a class="nav-link" href="{% url 'about' %}">Historia</a>
+
+
+2.3. Resaltando la Sección Actual en el Menú
+********************************************
+- Se utiliza la variable `request.path` para saber la URL actual y añadir la clase "active" al elemento del menú correspondiente.
+
+- Ejemplo en `core/templates/core/base.html`:
+<li class="nav-item px-lg-4 {% if request.path == '/' %}active{% endif %}">
+    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+</li>
+<li class="nav-item px-lg-4 {% if request.path == '/about/' %}active{% endif %}">
+    <a class="nav-link" href="{% url 'about' %}">Historia</a>
+</li>
+<!-- ... etc ... -->
+
+
+3. TERCERA APP [SERVICES]
+-------------------------
+
+3.1. Creación del Modelo y Configuración del Admin
+**************************************************
+- Configurar el manejo de archivos `MEDIA` en `settings.py` y `urls.py`.
+# settings.py
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# webempresa/urls.py
+from django.conf import settings
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+- Crear la app:
+(django2) python manage.py startapp services
+
+- Añadir a `INSTALLED_APPS`.
+
+- Crear el modelo `Service` en `services/models.py`:
+class Service(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Título")
+    subtitle = models.CharField(max_length=200, verbose_name="Subtítulo")
+    content = models.TextField(verbose_name="Contenido")
+    image = models.ImageField(verbose_name="Imagen", upload_to="services")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Fecha de edición")
+    
+    class Meta:
+        verbose_name = "servicio"
+        verbose_name_plural = "servicios"
+        ordering = ['-created']
+
+    def __str__(self):
+        return self.title
+
+- Realizar migraciones y crear superusuario.
+
+- Configurar el admin en `services/admin.py` para mostrar campos de solo lectura:
+from .models import Service
+
+class ServiceAdmin(admin.ModelAdmin):
+    readonly_fields = ('created', 'updated')
+
+admin.site.register(Service, ServiceAdmin)
+
+- Traducir la app al español:
+# settings.py
+LANGUAGE_CODE = 'es'
+
+# services/apps.py
+class ServicesConfig(AppConfig):
+    name = 'services'
+    verbose_name = 'Gestor de servicios'
+
+# settings.py (reemplazar 'services' en INSTALLED_APPS)
+'services.apps.ServicesConfig',
+
+
+3.2. Creación de la Vista y el Template
+***************************************
+- Mover el template `services.html` a `services/templates/services/`.
+
+- Mover la vista `services` de `core` a `services/views.py`.
+- Crear `services/urls.py` y configurar la URL.
+- Actualizar `webempresa/urls.py` para incluir las URLs de `services`.
+
+- Modificar la vista para obtener los servicios de la base de datos y pasarlos al template:
+# services/views.py
+from .models import Service
+
+def services(request):
+    services = Service.objects.all()
+    return render(request, "services/services.html", {'services':services})
+
+- Mostrar los servicios en el template `services.html` con un bucle:
+{% for service in services reversed %}
+    <section class="page-section">
+        <!-- ... HTML para mostrar cada servicio ... -->
+        <h2 class="section-heading-lower">{{service.title}}</span></h2>
+        <img src="{{service.image.url}}" alt="">
+        <p class="mb-0">{{service.content}}</p>
+        <!-- ... -->
+    </section>
+{% endfor %}
+
+
+4. CUARTA APP [BLOG]
+--------------------
+
+4.1. Modelos con Relaciones (ForeignKey, ManyToMany)
+*****************************************************
+- Crear la app:
+(django2) python manage.py startapp blog
+
+- Crear los modelos `Category` y `Post` en `blog/models.py`.
+- `Post` tendrá relaciones:
+    - `ForeignKey` con el modelo `User` para el autor.
+    - `ManyToManyField` con el modelo `Category` para las categorías.
+
+# blog/models.py
+from django.db import models
+from django.utils.timezone import now
+from django.contrib.auth.models import User
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Nombre")
+    # ... created, updated ...
+
+class Post(models.Model):
+    title = models.CharField(max_length=200, verbose_name="Título")
+    content = models.TextField(verbose_name="Contenido")
+    published = models.DateTimeField(default=now, verbose_name="Fecha de publicación")
+    image = models.ImageField(upload_to="blog", null=True, blank=True, verbose_name="Imagen")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Autor")
+    categories = models.ManyToManyField(Category, verbose_name="Categorías", related_name="get_posts")
+    # ... created, updated ...
+
+- Activar la app, configurar el admin y migrar.
+
+
+4.2. Personalización Avanzada del Administrador
+***********************************************
+- En `blog/admin.py`, se personaliza la vista de lista del modelo `Post`.
+- `list_display`: Define las columnas a mostrar en la lista.
+- `ordering`: Define el orden por defecto.
+- `search_fields`: Habilita una barra de búsqueda por los campos especificados.
+- `date_hierarchy`: Añade navegación por fechas.
+- `list_filter`: Añade filtros en la barra lateral.
+
+- Para mostrar un campo ManyToMany (como las categorías) en `list_display`, se crea un método personalizado:
+# blog/admin.py
+class PostAdmin(admin.ModelAdmin):
+    readonly_fields = ('created', 'updated')
+    list_display = ('title', 'author', 'published', 'post_categories')
+    # ... otras opciones ...
+
+    def post_categories(self, obj):
+        return ", ".join([c.name for c in obj.categories.all().order_by("name")])
+    post_categories.short_description = "Categorías"
+
+admin.site.register(Post, PostAdmin)
+
+
+4.3. Creando las Vistas del Blog (Parte 1)
+******************************************
+- Preparar la estructura: mover `blog.html` y la vista `blog` a la app `Blog`, y configurar las URLs.
+
+- Vista `blog` en `blog/views.py`:
+from .models import Post
+def blog(request):
+    posts = Post.objects.all()
+    return render(request, "blog/blog.html", {'posts':posts})
+
+- Fusionar el template para mostrar los posts.
+- Usar filtros de template para formatear:
+    - `{{ post.published|date:"SHORT_DATE_FORMAT" }}`: Formatea la fecha.
+    - `{{ post.content|linebreaks }}`: Respeta los saltos de línea.
+    - `{{ post.categories.all|join:", " }}`: Muestra las categorías separadas por coma.
+
+
+4.4. Creando las Vistas del Blog (Parte 2)
+******************************************
+- Vista para filtrar entradas por categoría.
+
+- Se utiliza un parámetro dinámico en la URL para el ID de la categoría:
+# blog/urls.py
+path('category/<int:category_id>/', views.category, name="category")
+
+- Vista `category` en `blog/views.py`:
+from django.shortcuts import get_object_or_404
+
+def category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    # Se pueden obtener los posts de dos formas:
+    # 1. posts = Post.objects.filter(categories=category)
+    # 2. (Más elegante, usando la relación inversa) en el template.
+    return render(request, "blog/category.html", {'category':category})
+
+- En el template `category.html`, se usa la relación inversa para obtener los posts:
+{% for post in category.get_posts.all %}
+    <!-- ... mostrar info del post ... -->
+{% endfor %}
+
+- Actualizar los templates (`blog.html` y `category.html`) para que las categorías sean enlaces:
+{% for category in post.categories.all %}
+    <a href="{% url 'category' category.id %}" class="link">{{category.name}}</a>
+{% endfor %}
+
+- Ajustar la lógica para resaltar "Blog" en el menú cuando se está en una categoría:
+{% if request.path|slice:":6" == '/blog/' %}active{% endif %}
+
+
+5. QUINTA APP [SOCIAL]
+----------------------
+
+5.1. Creación del Modelo y Admin
+********************************
+- Crear la app `social`.
+
+- Modelo `Link` en `social/models.py` para almacenar enlaces a redes sociales:
+class Link(models.Model):
+    key = models.SlugField(verbose_name="Nombre clave", max_length=100, unique=True)
+    name = models.CharField(verbose_name="Red social", max_length=200)
+    url = models.URLField(verbose_name="Enlace", max_length=200, null=True, blank=True)
+    # ... created, updated ...
+
+- Configurar `apps.py` para un nombre descriptivo, añadir a `INSTALLED_APPS`, migrar y configurar el `admin.py`.
+
+
+5.2. Procesadores de Contexto
+*****************************
+- Para tener los enlaces sociales disponibles en todas las páginas sin pasarlos desde cada vista, se usa un procesador de contexto.
+
+- Crear un fichero `social/processors.py`.
+
+- Definir una función que devuelve un diccionario con los datos a añadir al contexto global:
+# social/processors.py
+from .models import Link
+
+def ctx_dict(request):
+    ctx = {}
+    links = Link.objects.all()
+    for link in links:
+        ctx[link.key] = link.url
+    return ctx
+
+- Registrar el procesador en `settings.py` dentro de la configuración `TEMPLATES`:
+'OPTIONS': {
+    'context_processors': [
+        # ... otros procesadores ...
+        'social.processors.ctx_dict',
+    ],
+},
+
+- Ahora, las claves del diccionario (`LINK_TWITTER`, `LINK_FACEBOOK`, etc.) están disponibles en todos los templates.
+
+
+6. SEXTA APP [PAGES]
+--------------------
+
+6.1. Creación del Modelo, Admin y Vistas
+****************************************
+- Crear la app `pages`.
+
+- Modelo `Page` con `title` y `content`.
+
+- Vista `page` que recibe un `page_id` para mostrar una página específica:
+# pages/views.py
+def page(request, page_id):
+    page = get_object_or_404(Page, id=page_id)
+    return render(request, 'pages/sample.html', {'page':page})
+
+- Configurar las URLs correspondientes.
+
+
+6.2. Creando un Template Tag Personalizado
+******************************************
+- Alternativa al procesador de contexto para inyectar datos en los templates.
+- Crear el directorio `pages/templatetags` con un `__init__.py` y un fichero como `pages_extras.py`.
+
+- Registrar el tag en `pages/templatetags/pages_extras.py`:
+from django import template
+from pages.models import Page
+
+register = template.Library()
+
+@register.simple_tag
+def get_page_list():
+    pages = Page.objects.all()
+    return pages
+
+- En el template (`base.html`), cargar y usar el tag:
+{% load pages_extras %}
+{% get_page_list as page_list %}
+
+{% for page in page_list %}
+    <a href="{% url 'page' page.id %}">{{page.title}}</a>
+{% endfor %}
+
+
+6.3. Ordenación y Edición de Páginas
+************************************
+- Añadir un campo `order` (SmallIntegerField) al modelo `Page` para permitir ordenación manual.
+- Modificar el `Meta.ordering` del modelo para que ordene por este nuevo campo.
+
+- Añadir un enlace de "Editar" en la página que solo sea visible para usuarios autenticados:
+# pages/templates/pages/sample.html
+{% if user.is_authenticated %}
+    <p><a href="{% url 'admin:pages_page_change' page.id %}">Editar</a></p>
+{% endif %}
+
+
+7. PERSONALIZACIÓN DEL ADMINISTRADOR (EDITOR WYSIWYG)
+------------------------------------------------------
+
+7.1. Integración de CKEditor
+****************************
+- Instalar la librería:
+(django2) pip install django-ckeditor
+
+- Añadir `'ckeditor'` a `INSTALLED_APPS`.
+
+- Cambiar el campo del modelo de `models.TextField` a `RichTextField`:
+# pages/models.py
+from ckeditor.fields import RichTextField
+# ...
+content = RichTextField(verbose_name="Contenido")
+
+- Para que el HTML se renderice correctamente en el frontend, usar el filtro `safe`:
+{{ page.content|safe }}
+
+- Se puede personalizar la barra de herramientas de CKEditor en `settings.py`.
+
+
+8. SÉPTIMA APP [CONTACT] - FORMULARIOS
+--------------------------------------
+
+8.1. Creación de la App y Diseño del Formulario
+***********************************************
+- Crear la app `contact`, mover la vista y el template, y configurar las URLs.
+
+- Crear un fichero `contact/forms.py` para definir el formulario:
+# contact/forms.py
+from django import forms
+
+class ContactForm(forms.Form):
+    name = forms.CharField(label="Nombre", required=True)
+    email = forms.EmailField(label="Email", required=True)
+    content = forms.CharField(label="Contenido", required=True, widget=forms.Textarea())
+
+- En la vista, instanciar el formulario y pasarlo al template:
+# contact/views.py
+from .forms import ContactForm
+
+def contact(request):
+    contact_form = ContactForm()
+    return render(request, "contact/contact.html", {'form':contact_form})
+
+- Renderizar el formulario en el template:
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Enviar">
+</form>
+
+
+8.2. Procesado y Validación del Formulario
+******************************************
+- En la vista, diferenciar entre peticiones GET (mostrar formulario vacío) y POST (procesar datos).
+
+# contact/views.py
+def contact(request):
+    contact_form = ContactForm()
+    if request.method == "POST":
+        contact_form = ContactForm(data=request.POST)
+        if contact_form.is_valid():
+            name = request.POST.get('name', '')
+            email = request.POST.get('email', '')
+            content = request.POST.get('content', '')
+            # Aquí irá la lógica para enviar el email
+            # Redireccionar tras el envío exitoso
+            return redirect(reverse('contact')+"?ok")
+            
+    return render(request, "contact/contact.html", {'form':contact_form})
+
+- En el template, mostrar un mensaje de éxito si la URL contiene `?ok`:
+{% if 'ok' in request.GET %}
+    <p><b>Su mensaje se ha enviado correctamente.</b></p>
+{% endif %}
+
+
+8.3. Fusionando el Formulario con el Frontend
+*********************************************
+- Para un control total sobre el diseño, se renderizan los campos del formulario manualmente en el template en lugar de usar `{{ form.as_table }}`.
+
+# contact/contact.html
+{{ form.name.label_tag }}
+{{ form.name }}
+{{ form.name.errors }}
+
+{{ form.email.label_tag }}
+{{ form.email }}
+{{ form.email.errors }}
+
+- Se pueden añadir atributos a los campos (como clases CSS) desde la definición del formulario en `forms.py` usando widgets.
+
+
+8.4. Enviando Emails
+********************
+- Se utiliza el módulo de correo de Django.
+
+- En la vista, después de validar el formulario, se construye y envía el email:
+# contact/views.py
+from django.core.mail import EmailMessage
+
+# ... dentro de if contact_form.is_valid():
+email = EmailMessage(
+    "Asunto del correo",
+    "Cuerpo del mensaje: {} {} \n\n{}".format(name, email, content),
+    "email-no-contestar@inbox.mailtrap.io", # Origen
+    ["destino@correo.com"], # Destino
+    reply_to=[email]
+)
+try:
+    email.send()
+    # Redireccionar a ?ok
+except:
+    # Redireccionar a ?fail
+
+
+8.5. Configuración de Gmail para Envío de Correos
+*************************************************
+- Es necesario configurar el backend de email en `settings.py`.
+- No es recomendable poner credenciales directamente en el código. Una opción es usar un fichero JSON externo.
+
+- Ejemplo de configuración en `settings.py` para Gmail:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tu_email@gmail.com'
+EMAIL_HOST_PASSWORD = 'tu_contraseña_de_aplicacion'
+
+
+9. PERSONALIZACIÓN DEL ADMINISTRADOR (PERMISOS)
+-----------------------------------------------
+
+9.1. Creación de Grupos y Permisos
+**********************************
+- Desde el panel de administrador, se pueden crear grupos de usuarios.
+- A cada grupo se le asignan permisos específicos (añadir, cambiar, borrar) sobre cada modelo.
+- Luego, se crean usuarios y se asignan a estos grupos.
+
+
+9.2. Personalización del Admin según el Grupo de Usuario
+********************************************************
+- Es posible personalizar dinámicamente el `ModelAdmin` (por ejemplo, qué campos son de solo lectura) basándose en el usuario que ha iniciado sesión.
+- Se sobrescribe el método `get_readonly_fields` en la clase `ModelAdmin`.
+
+# social/admin.py
+class LinkAdmin(admin.ModelAdmin):
+    # ...
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.groups.filter(name="Personal").exists():
+            return ('key', 'name')
+        else:
+            return ()
