@@ -16,3 +16,53 @@ class Product(models.Model):
 
   def __str__(self):
     return self.nombre
+
+  def get_translation(self, language='es'):
+    """
+    Obtiene la traducción del producto para un idioma específico.
+    Si no existe, devuelve los valores por defecto (español).
+    """
+    try:
+      translation = self.translations.get(language=language)
+      return {
+        'nombre': translation.nombre,
+        'descripcion': translation.descripcion
+      }
+    except ProductTranslation.DoesNotExist:
+      # Si no hay traducción, devolver los valores por defecto
+      return {
+        'nombre': self.nombre,
+        'descripcion': self.descripcion
+      }
+
+
+class ProductTranslation(models.Model):
+  """
+  Modelo para almacenar las traducciones de los productos.
+  Cada producto puede tener múltiples traducciones (una por idioma).
+  """
+  product = models.ForeignKey(
+    Product, 
+    related_name='translations', 
+    on_delete=models.CASCADE,
+    verbose_name='Producto'
+  )
+  language = models.CharField(
+    max_length=2, 
+    choices=[
+      ('es', 'Español'),
+      ('en', 'English')
+    ],
+    verbose_name='Idioma'
+  )
+  nombre = models.CharField(max_length=200, verbose_name='Nombre traducido')
+  descripcion = models.TextField(verbose_name='Descripción traducida')
+  
+  class Meta:
+    verbose_name = 'Traducción de Producto'
+    verbose_name_plural = 'Traducciones de Productos'
+    unique_together = ('product', 'language')  # Un producto solo puede tener una traducción por idioma
+    ordering = ['product', 'language']
+
+  def __str__(self):
+    return f"{self.product.nombre} ({self.get_language_display()})"
