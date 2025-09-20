@@ -13,7 +13,7 @@ class ProductListView(generics.ListAPIView):
   serializer_class = ProductSerializer
   def get_queryset(self):
     # Solo vamos a devolver los productos que estén activos
-    return Product.objects.filter(activo=True).order_by('-fecha_creacion')
+    return Product.objects.filter(activo=True).order_by('fecha_creacion')
 
 class ProductDetailView(generics.RetrieveAPIView):
   """
