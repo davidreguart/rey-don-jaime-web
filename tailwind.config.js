@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+        '3xl': '1600px'
+      },
       colors: {
         'brand-beige': '#F7F6F2', // Main background
         'brand-dark-text': '#3A3A3A', // Main text

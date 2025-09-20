@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
         : 'bg-brand-beige shadow-sm'
     }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <a href="#" className="flex items-center space-x-3">
             <img 
@@ -144,15 +144,16 @@ const Navbar: React.FC = () => {
             </div>
           </nav>
           
-          {/* Mobile Menu Button */}
+                    {/* Mobile Menu Button */}
           <div className="lg:hidden">
-            <button
+            {/* Mejorar área de toque en móvil */}
+            <motion.button
+              className="text-brand-dark-text hover:text-brand-gold p-3 rounded-md"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-brand-dark-text hover:text-brand-gold p-2"
               aria-label={t('navbar.mobileMenuAriaLabel')}
             >
               {isMobileMenuOpen ? <CloseIcon className="h-6 w-6" /> : <HamburgerIcon className="h-6 w-6" />}
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-hero-pattern bg-cover bg-center text-white py-32 sm:py-40 lg:py-56 overflow-hidden">
+    <section className="relative bg-hero-pattern bg-cover bg-center text-white py-20 sm:py-32 md:py-40 lg:py-56 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/60"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
       <motion.div 

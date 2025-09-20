@@ -15,8 +15,8 @@ const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClic
   
   const buttonTextKey = product.isParentProduct ? 'products.viewRangeButton' : 'products.viewDetailsButton';
   const ariaLabel = product.isParentProduct 
-    ? t('products.aria.exploreCategory', { categoryName: t(product.nameKey) })
-    : t('products.aria.viewDetails', { productName: t(product.nameKey) });
+    ? t('products.aria.exploreCategory', { categoryName: t(product.nameKey || '') })
+    : t('products.aria.viewDetails', { productName: t(product.nameKey || '') });
 
   return (
     <div
@@ -26,9 +26,14 @@ const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClic
     >
       <div className="relative w-full h-48 sm:h-52">
         <img 
-          src={product.imageUrl} 
-          alt={t(product.nameKey)} 
+          src={product.imageUrl || product.imagen} 
+          alt={t(product.nameKey || '')}
+          loading="lazy" 
+          decoding='async'
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          onError={(e) => {
+            e.currentTarget.src = '/images/placeholders/placeholder-product.jpg';
+          }}
         />
 
         {product.categoryKey && !product.isParentProduct && (
@@ -40,7 +45,7 @@ const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClic
       
       <div className="p-4 flex flex-col flex-grow relative">
         <h3 className="font-playfair text-base font-medium text-brand-dark-text mb-2 transition-colors duration-300 group-hover:text-brand-gold lowercase first-letter:uppercase">
-             {t(product.nameKey)}
+             {t(product.nameKey || '')}
            </h3>
         
         {/* Optional: Short description or tagline if available and space allows */}

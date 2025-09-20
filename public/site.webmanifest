@@ -1,0 +1,16 @@
+{
+  "name": "Rey Don Jaime",
+  "short_name": "Rey Don Jaime",
+  "description": "Aceites de oliva premium de la más alta calidad",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#D4AF37",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

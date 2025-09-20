@@ -24,7 +24,10 @@
     "noUncheckedSideEffectImports": true,
 
     "paths": {
-      "@/*" :  ["./*"]
-    }
+      "@/*": ["./*"]
+    },
+
+    /* Vite Types*/
+    "types": ["vite/client"]
   }
 }

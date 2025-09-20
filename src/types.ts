@@ -6,16 +6,26 @@ export interface NavItem {
 }
 
 export interface Product {
-  id: string;
-  nameKey: string;
-  imageUrl: string;
-  categoryKey?: string;
-  descriptionKey: string; 
-  // Attributes for Oil Finder Quiz
+  id: number;
+  nombre: string;
+  descripcion: string;
+  imagen: string;
+  activo: boolean;
+  fecha_creacion: string;
+  fecha_actualizacion: string;
+
+  // Mantenemos campos existentes para compatibilidad con componentes
+  nameKey?: string;
+  imageUrl?: string;
+  categoryKey: string;
+  descriptionKey?: string;
+
+  // Atributos para el cuestionario
   intensity?: 'suave' | 'medio' | 'intenso';
   idealUsage?: string[]; 
   attributes?: string[]; 
-  // For accordion style product card
+
+  // Para las Cards de Producto estilo Acordeón
   subProducts?: Product[];
   isParentProduct?: boolean;
 }
