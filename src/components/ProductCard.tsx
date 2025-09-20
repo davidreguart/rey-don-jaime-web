@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// Corrected: Removed unused import 'ProductCardProps' as it's not defined in types.ts and RedesignedProductCardProps is used.
 import { Product } from '../types'; 
 import { useLanguage } from '../contexts/LanguageContext';
 import { ArrowRightIcon } from './icons/ArrowRightIcon';
@@ -10,13 +9,30 @@ interface RedesignedProductCardProps {
 }
 
 const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClick }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isHovered, setIsHovered] = useState(false);
   
+  // Función para obtener el nombre según el idioma
+  const getProductName = () => {
+    if (language === 'en' && product.nombre_en) {
+      return product.nombre_en;
+    }
+    return product.nombre;
+  };
+  
+  // Función para obtener la descripción según el idioma
+  const getProductDescription = () => {
+    if (language === 'en' && product.descripcion_en) {
+      return product.descripcion_en;
+    }
+    return product.descripcion;
+  };
+  
+  const productName = getProductName();
   const buttonTextKey = product.isParentProduct ? 'products.viewRangeButton' : 'products.viewDetailsButton';
   const ariaLabel = product.isParentProduct 
-    ? t('products.aria.exploreCategory', { categoryName: t(product.nameKey || '') })
-    : t('products.aria.viewDetails', { productName: t(product.nameKey || '') });
+    ? t('products.aria.exploreCategory', { categoryName: productName })
+    : t('products.aria.viewDetails', { productName: productName });
 
   return (
     <div
@@ -27,7 +43,7 @@ const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClic
       <div className="relative w-full h-48 sm:h-52">
         <img 
           src={product.imageUrl || product.imagen} 
-          alt={t(product.nameKey || '')}
+          alt={productName}
           loading="lazy" 
           decoding='async'
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
@@ -45,8 +61,8 @@ const ProductCard: React.FC<RedesignedProductCardProps> = ({ product, onCardClic
       
       <div className="p-4 flex flex-col flex-grow relative">
         <h3 className="font-playfair text-base font-medium text-brand-dark-text mb-2 transition-colors duration-300 group-hover:text-brand-gold lowercase first-letter:uppercase">
-             {t(product.nameKey || '')}
-           </h3>
+          {productName}
+        </h3>
         
         {/* Optional: Short description or tagline if available and space allows */}
         {/* <p className="font-montserrat text-sm text-brand-brown mb-4 line-clamp-2">

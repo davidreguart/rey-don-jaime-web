@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <a href="#" className="flex items-center space-x-3">
             <img 
-              src="https://www.aceitesreydonjaime.com/rs/icono_reydonjaime.png" 
+              src="/images/icons/icono_reydonjaime.png"
               alt={t('navbar.logoAlt')}
               className="h-12 w-12"
             />

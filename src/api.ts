@@ -8,6 +8,9 @@ export interface ApiProduct {
   activo: boolean;
   fecha_creacion: string;
   fecha_actualizacion: string;
+  // Campos de traducción
+  nombre_en?: string;
+  descripcion_en?: string;
 }
 
 export const productApi = {

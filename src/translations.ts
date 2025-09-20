@@ -1,4 +1,3 @@
-
 import { Language } from "./types";
 
 export const defaultLanguage = 'es';
@@ -47,37 +46,7 @@ export const translations: Record<string, Record<string, string>> = {
     'products.categories.special': 'ESPECIAL',
     'products.categories.ecological': 'ECOLÓGICO',
     'products.categories.vinegar': 'VINAGRE',
-
-    'products.oilOliveCategory.name': 'ACEITE DE OLIVA',
-    'products.oilOliveCategory.description': 'Explora nuestra selección de aceites de oliva, desde el intenso Virgen Extra hasta opciones más suaves.', 
     'products.subProductModal.title': 'Gama de {{parentName}}',
-
-
-    'products.oilOliveExtraVirgin.name': 'ACEITE DE OLIVA VIRGEN EXTRA',
-    'products.oilOliveExtraVirgin.description': 'Auténtico zumo de frutas 100% natural que conserva el sabor, el aroma, las vitaminas y otros muchos micro elementos, procedentes de las variedades Blanqueta, Picual, Manzanilla y Arbequina. Por su decantación natural, tiene un agradable e intenso aroma. En el paladar, es de sabor intenso y afrutado. Un ingrediente esencial de la dieta mediterránea.\n\nSinónimo de salud y bienestar.',
-    'products.oilOliveVirgin.name': 'ACEITE DE OLIVA VIRGEN',
-    'products.oilOliveVirgin.description': 'Elaborado con Aceite de Oliva Virgen, convierte cada plato en especial, elegante y sin enmascarar el sabor de los alimentos. Especialmente recomendado para destacar el sabor de ensaladas, verduras o platos ya cocinados.',
-    'products.oilOliveIntense.name': 'ACEITE DE OLIVA INTENSO',
-    'products.oilOliveIntense.description': 'Elaborado enriqueciendo Aceite de Oliva refinado con Aceite de Oliva Virgen, está especialmente recomendado para quienes prefieren un sabor más intenso en sus platos.',
-    'products.oilOliveMild.name': 'ACEITE DE OLIVA SUAVE',
-    'products.oilOliveMild.description': 'Elaborado enriqueciendo Aceite de Oliva refinado con Aceite de Oliva Virgen, el resultado es un aceite de gran versatilidad, de acidez máxima controlada y de paladar suave que no puede faltar en la cocina, especialmente para quienes prefieren un sabor ligero en sus platos.',
-    
-    'products.oilPomace.name': 'OLI DE SANSA D\'OLIVA - Aceite de Orujo de Oliva',
-    'products.oilPomace.description': 'Todo un clásico en la gastronomía española, es frecuentemente empleado para frituras por su sabor y alto rendimiento. Muy utilizado en restauración.',
-    'products.oilSunflowerRefined.name': 'ACEITE DE GIRASOL REFINADO',
-    'products.oilSunflowerRefined.description': 'Procedente de semillas de girasol, es un aceite de gran calidad envasado para su perfecta conservación sin incorporar ningún aditivo. Permite un amplio abanico de posibilidades en la cocina y es especialmente recomendado para aquellos platos, como salsas y repostería, que requieren el uso de un aceite con sabor muy suave.',
-    'products.oilSunflowerHighOleic.name': 'ACEITE DE GIRASOL ALTO OLEICO REFINADO 80% Oléico',
-    'products.oilSunflowerHighOleic.description': 'Tanto la esmerada selección de semillas, como la tecnología aplicada en los procesos de molturación y extracción de aceites vegetales hacen de este aceite el mejor aliado para nuestros clientes. Especial para fritos, sus cualidades antiespumantes y antioxidantes naturales, harán que el resultado sea siempre una comida sana, sabrosa y ligera con menos absorción de aceite por parte de los alimentos.',
-    'products.oilSeedRefined.name': 'ACEITE DE SEMILLAS REFINADO',
-    'products.oilSeedRefined.description': 'Procedente de semillas de girasol, sus altos niveles de oléico hacen que este aceite sea ideal cuando se necesite un aceite resistente. Fuente de grasas insaturadas cardiosaludables y de vitamina E, es un potente antioxidante.',
-    'products.oilSoyRefined.name': 'ACEITE DE SOJA REFINADO',
-    'products.oilSoyRefined.description': 'Aceite ligero, amarillento, perfumado y muy adecuado por su abundancia en ácidos grasos poliinsaturados. Aporta unas cantidades equilibradas de los ácidos grasos esenciales omega 3 y omega 6, beneficiosos para el corazón, el sistema nervioso y células cerebrales. Puede ayudar por ello a controlar el colesterol malo y la arteriosclerosis, contiene vitamina A y vitamina E.\n\nDe alta asimilación y digestibilidad, es ideal para utilizar en ensaladas y salsas frías.',
-    'products.oilSpecialFrying.name': 'ACEITE ESPECIAL FREIDORA ENRIQUECIDO CON VITAMINA E',
-    'products.oilSpecialFrying.description': 'Especialmente diseñado para freidoras. Resultado de una cuidadosa selección de aceites vegetales que ayudan a obtener un mayor rendimiento en la cocina profesional, reduciendo humos, olores y espumas. Da un toque especial a sus platos dejando sus frituras crujientes y deliciosas.',
-    'products.oilEcological.name': 'ACEITE DE OLIVA VIRGEN EXTRA ECOLÓGICO ECOTRAVADELL',
-    'products.oilEcological.description': 'Aceite de Oliva Virgen Extra, procedente de ACEITUNAS DE CULTIVO ECOLÓGICO/BIOLÓGICO. Cultivo sin el uso de abonos ni pesticidas químicos, sin aditivos ni conservantes. Al ser un producto natural donde se lleva a cabo el cultivo con esmero artesano, extraído a temperaturas bajas y sin aplicación de productos químicos, mantiene todo el sabor, el aroma y la bondad de la zona.',
-    'products.vinegarsWine.name': 'VINAGRES DE VINO',
-    'products.vinegarsWine.description': 'Nuestra selección de vinagres son los compañeros perfectos para nuestros aceites. Vinagres de vino blanco, manzana y módena.',
 
     // Process Section
     'process.title': 'Nuestro Proceso Artesanal',
@@ -96,7 +65,6 @@ export const translations: Record<string, Record<string, string>> = {
     'process.step6.description': 'Finalmente, el aceite se embotella bajo estrictos controles de calidad, listo para llegar a tu mesa con todo su sabor y aroma.',
     'process.playVideoAriaLabel': 'Reproducir vídeo del paso: {{stepTitle}}',
     'process.selectStepAriaLabel': 'Seleccionar paso: {{stepTitle}}',
-
 
     // Awards Section
     'awards.title': 'Premios y Certificaciones',
@@ -121,7 +89,6 @@ export const translations: Record<string, Record<string, string>> = {
     'awards.certCAECV.description': 'Certifica que nuestros aceites ecológicos cumplen con las normativas europeas de agricultura orgánica.',
     'awards.yearActive': 'Vigente',
 
-
     // History Section
     'history.title': 'Nuestra Historia Desde 1940',
     'history.paragraph1': 'Durante más de 80 años, Aceites Rey Don Jaime ha cultivado las mejores variedades de oliva en los soleados olivares de Alicante, España. Nuestra tradición familiar de producción de aceite de oliva abarca generaciones, combinando métodos tradicionales con innovación moderna.',
@@ -145,7 +112,6 @@ export const translations: Record<string, Record<string, string>> = {
     'testimonials.prevAriaLabel': 'Testimonio anterior',
     'testimonials.nextAriaLabel': 'Testimonio siguiente',
     'testimonials.goToAriaLabel': 'Ir al testimonio {{testimonialNumber}}',
-
 
     // Oil Finder Section
     'oilFinder.title': 'Encuentra Tu Aceite Perfecto',
@@ -172,19 +138,21 @@ export const translations: Record<string, Record<string, string>> = {
     'oilFinder.results.youMightLike': 'Basado en tus respuestas, podrías disfrutar de estos aceites:',
     'oilFinder.results.noMatch': 'No hemos encontrado una coincidencia exacta con tus preferencias. Te invitamos a explorar toda nuestra gama de aceites o contactarnos para una recomendación personalizada.',
     'oilFinder.results.viewDetailsButton': 'Ver Detalles',
-    
 
     // Contact Section
     'contact.title': 'Contacto',
     'contact.subtitle': '¿Tienes preguntas sobre nuestros productos o quieres saber más? Ponte en contacto con nuestro equipo y estaremos encantados de ayudarte.',
     'contact.addressLabel': 'Dirección',
-    'contact.addressValue': 'Finca Olivares, Alicante, España',
+    'contact.addressValue': 'C/ Ullals, 7, 46440 Almussafes - Valencia (España)',
     'contact.emailLabel': 'Email',
-    'contact.emailValue': 'info@aceitesreydonjaime.com',
-    'contact.emailHref': 'mailto:info@aceitesreydonjaime.com',
+    'contact.emailValue': 'info@aceitesreydonjaime.com | contacto@aceitesreydonjaime.com',
+    'contact.emailHref': 'mailto:contacto@aceitesreydonjaime.com',
     'contact.phoneLabel': 'Teléfono',
-    'contact.phoneValue': '+34 123 456 789',
-    'contact.phoneHref': 'tel:+34123456789',
+    'contact.phoneValue': '96 380 80 61',
+    'contact.phoneHref': 'tel:963808061',
+    'contact.faxLabel': 'Fax',
+    'contact.faxValue': '96 380 48 16',
+    'contact.faxHref': 'tel:963804816',
     'contact.formTitle': 'Comencemos con tus datos',
     'contact.formLabelName': '¿Cómo te llamas?',
     'contact.formPlaceholderName': 'Juan Pérez',
@@ -204,10 +172,6 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Footer
     'footer.aboutText': 'Aceites de oliva premium elaborados con tradición y excelencia desde 1940 en los soleados olivares de Alicante, España.',
-    'footer.social.facebookAriaLabel': 'Facebook',
-    'footer.social.instagramAriaLabel': 'Instagram',
-    'footer.social.twitterAriaLabel': 'Twitter',
-    'footer.social.youtubeAriaLabel': 'YouTube',
     'footer.quickLinksTitle': 'Enlaces Rápidos',
     'footer.links.ourOils': 'Nuestros Aceites',
     'footer.links.productionProcess': 'Proceso de Producción',
@@ -235,7 +199,6 @@ export const translations: Record<string, Record<string, string>> = {
     'navbar.mobileMenuAriaLabel': 'Open mobile menu',
     'navbar.selectLanguage': 'Select Language',
 
-
     // Hero Section
     'hero.title': '100% Natural Olive Oil',
     'hero.subtitle': 'Crafted with passion in the sunny olive groves of Alicante since 1940',
@@ -259,38 +222,8 @@ export const translations: Record<string, Record<string, string>> = {
     'products.categories.special': 'SPECIAL',
     'products.categories.ecological': 'ECOLOGICAL',
     'products.categories.vinegar': 'VINEGAR',
-
-    'products.oilOliveCategory.name': 'OLIVE OIL',
-    'products.oilOliveCategory.description': 'Explore our selection of olive oils, from intense Extra Virgin to milder options.',
     'products.subProductModal.title': '{{parentName}} Range',
 
-
-    'products.oilOliveExtraVirgin.name': 'EXTRA VIRGIN OLIVE OIL',
-    'products.oilOliveExtraVirgin.description': 'Authentic 100% natural fruit juice that preserves the flavor, aroma, vitamins, and many other microelements from Blanqueta, Picual, Manzanilla, and Arbequina varieties. Due to its natural decantation, it has a pleasant and intense aroma. On the palate, it offers an intense and fruity flavor. An essential ingredient of the Mediterranean diet.\n\nSynonymous with health and well-being.',
-    'products.oilOliveVirgin.name': 'VIRGIN OLIVE OIL',
-    'products.oilOliveVirgin.description': 'Made with Virgin Olive Oil, it makes every dish special, elegant, and without masking the flavor of the food. Especially recommended to highlight the flavor of salads, vegetables, or already cooked dishes.',
-    'products.oilOliveIntense.name': 'INTENSE OLIVE OIL',
-    'products.oilOliveIntense.description': 'Made by enriching refined Olive Oil with Virgin Olive Oil, it is especially recommended for those who prefer a more intense flavor in their dishes.',
-    'products.oilOliveMild.name': 'MILD OLIVE OIL',
-    'products.oilOliveMild.description': 'Made by enriching refined Olive Oil with Virgin Olive Oil, the result is a highly versatile oil with controlled maximum acidity and a mild palate that is a must-have in the kitchen, especially for those who prefer a light flavor in their dishes.',
-
-    'products.oilPomace.name': 'OLIVE POMACE OIL',
-    'products.oilPomace.description': 'A classic in Spanish gastronomy, frequently used for frying due to its flavor and high performance. Widely used in catering.',
-    'products.oilSunflowerRefined.name': 'REFINED SUNFLOWER OIL',
-    'products.oilSunflowerRefined.description': 'Sourced from sunflower seeds, this high-quality oil is packaged for perfect preservation without any additives. It offers a wide range of culinary possibilities and is especially recommended for dishes like sauces and pastries that require a very mild-flavored oil.',
-    'products.oilSunflowerHighOleic.name': 'HIGH OLEIC SUNFLOWER OIL 80% Oleic',
-    'products.oilSunflowerHighOleic.description': 'The careful selection of seeds and the technology applied in the milling and extraction processes make this oil the best ally for our customers. Special for frying, its anti-foaming and natural antioxidant qualities ensure a healthy, tasty, and light meal with less oil absorption by food.',
-    'products.oilSeedRefined.name': 'REFINED SEED OIL',
-    'products.oilSeedRefined.description': 'Derived from sunflower seeds, its high oleic levels make this oil ideal when a resistant oil is needed. A source of heart-healthy unsaturated fats and vitamin E, it is a powerful antioxidant.',
-    'products.oilSoyRefined.name': 'REFINED SOYBEAN OIL',
-    'products.oilSoyRefined.description': 'A light, yellowish, fragrant oil, very suitable due to its abundance of polyunsaturated fatty acids. It provides balanced amounts of essential omega-3 and omega-6 fatty acids, beneficial for the heart, nervous system, and brain cells. It can help control bad cholesterol and arteriosclerosis, and contains vitamin A and E.\n\nHighly assimilable and digestible, it is ideal for salads and cold sauces.',
-    'products.oilSpecialFrying.name': 'SPECIAL FRYER OIL ENRICHED WITH VITAMIN E',
-    'products.oilSpecialFrying.description': 'Specially designed for fryers. The result of a careful selection of vegetable oils that help achieve greater performance in professional kitchens, reducing smoke, odors, and foam. It adds a special touch to your dishes, leaving your fried foods crispy and delicious.',
-    'products.oilEcological.name': 'ORGANIC EXTRA VIRGIN OLIVE OIL ECOTRAVADELL',
-    'products.oilEcological.description': 'Extra Virgin Olive Oil from ORGANICALLY GROWN OLIVES. Cultivated without the use of chemical fertilizers or pesticides, without additives or preservatives. Being a natural product cultivated with artisan care, extracted at low temperatures without chemical application, it maintains all the flavor, aroma, and goodness of the region.',
-    'products.vinegarsWine.name': 'WINE VINEGARS',
-    'products.vinegarsWine.description': 'Our selection of vinegars are the perfect companions for our oils. White wine, apple, and Modena vinegars.',
-    
     // Process Section
     'process.title': 'Our Artisanal Process',
     'process.subtitle': 'From the olive to the bottle, discover how we create the best olive oil using traditional methods',
@@ -332,7 +265,6 @@ export const translations: Record<string, Record<string, string>> = {
     'awards.certCAECV.description': 'Certifies that our organic oils comply with European organic farming regulations.',
     'awards.yearActive': 'Active',
 
-
     // History Section
     'history.title': 'Our History Since 1940',
     'history.paragraph1': 'For over 80 years, Aceites Rey Don Jaime has cultivated the best olive varieties in the sunny groves of Alicante, Spain. Our family tradition of olive oil production spans generations, combining traditional methods with modern innovation.',
@@ -356,7 +288,6 @@ export const translations: Record<string, Record<string, string>> = {
     'testimonials.prevAriaLabel': 'Previous testimonial',
     'testimonials.nextAriaLabel': 'Next testimonial',
     'testimonials.goToAriaLabel': 'Go to testimonial {{testimonialNumber}}',
-
 
     // Oil Finder Section
     'oilFinder.title': 'Find Your Perfect Oil',
@@ -384,18 +315,17 @@ export const translations: Record<string, Record<string, string>> = {
     'oilFinder.results.noMatch': 'We couldn\'t find an exact match for your preferences. We invite you to explore our full range of oils or contact us for a personalized recommendation.',
     'oilFinder.results.viewDetailsButton': 'View Details',
 
-
     // Contact Section
     'contact.title': 'Contact',
     'contact.subtitle': 'Have questions about our products or want to know more? Get in touch with our team, and we\'ll be happy to help.',
     'contact.addressLabel': 'Address',
-    'contact.addressValue': 'Finca Olivares, Alicante, Spain',
+    'contact.addressValue': 'C/ Ullals, 7, 46440 Almussafes - Valencia (España)',
     'contact.emailLabel': 'Email',
-    'contact.emailValue': 'info@aceitesreydonjaime.com',
-    'contact.emailHref': 'mailto:info@aceitesreydonjaime.com',
+    'contact.emailValue': 'info@aceitesreydonjaime.com | contacto@aceitesreydonjaime.com',
+    'contact.emailHref': 'mailto:contacto@aceitesreydonjaime.com',
     'contact.phoneLabel': 'Phone',
-    'contact.phoneValue': '+34 123 456 789',
-    'contact.phoneHref': 'tel:+34123456789',
+    'contact.phoneValue': '123 456 789',
+    'contact.phoneHref': 'tel:123456789',
     'contact.formTitle': 'Let\'s start with your details',
     'contact.formLabelName': 'What\'s your name?',
     'contact.formPlaceholderName': 'John Doe',
@@ -415,10 +345,6 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Footer
     'footer.aboutText': 'Premium olive oils crafted with tradition and excellence since 1940 in the sunny olive groves of Alicante, Spain.',
-    'footer.social.facebookAriaLabel': 'Facebook',
-    'footer.social.instagramAriaLabel': 'Instagram',
-    'footer.social.twitterAriaLabel': 'Twitter',
-    'footer.social.youtubeAriaLabel': 'YouTube',
     'footer.quickLinksTitle': 'Quick Links',
     'footer.links.ourOils': 'Our Oils',
     'footer.links.productionProcess': 'Production Process',

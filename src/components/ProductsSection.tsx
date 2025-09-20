@@ -30,6 +30,10 @@ const transformApiProductToProduct = (apiProduct: ApiProduct): Product => {
     fecha_creacion: apiProduct.fecha_creacion,
     fecha_actualizacion: apiProduct.fecha_actualizacion,
     
+    // Campos de traducción
+    nombre_en: apiProduct.nombre_en,
+    descripcion_en: apiProduct.descripcion_en,
+    
     // Campos de compatibilidad
     nameKey: apiProduct.nombre,
     imageUrl: getImageUrl(apiProduct.imagen),

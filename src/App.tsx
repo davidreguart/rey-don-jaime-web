@@ -15,7 +15,7 @@ import Modal from './components/Modal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Lifted state for Product Detail Modal
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
@@ -62,7 +62,20 @@ const App: React.FC = () => {
     setSelectedProductForModal(null);
   };
 
+  // Funciones para obtener el texto según el idioma
+  const getProductName = (product: Product) => {
+    if (language === 'en' && product.nombre_en) {
+      return product.nombre_en;
+    }
+    return product.nombre;
+  };
 
+  const getProductDescription = (product: Product) => {
+    if (language === 'en' && product.descripcion_en) {
+      return product.descripcion_en;
+    }
+    return product.descripcion;
+  };
 
   return (
     <>
@@ -132,12 +145,12 @@ const App: React.FC = () => {
         <Modal 
             isOpen={isProductModalOpen} 
             onClose={closeProductModal}
-            title={t(selectedProductForModal.nameKey)}
+            title={getProductName(selectedProductForModal)}
         >
           <div className="flex flex-col md:flex-row gap-6 items-start">
             <img 
               src={selectedProductForModal.imageUrl} 
-              alt={t(selectedProductForModal.nameKey)} 
+              alt={getProductName(selectedProductForModal)} 
               className="w-full md:w-1/3 h-auto max-h-96 object-contain rounded-lg shadow-md"
             />
             <div className="md:w-2/3">
@@ -147,7 +160,7 @@ const App: React.FC = () => {
                 </p>
               )}
               <p className="font-montserrat text-brand-dark-text leading-relaxed whitespace-pre-line">
-                {t(selectedProductForModal.descriptionKey)}
+                {getProductDescription(selectedProductForModal)}
               </p>
             </div>
           </div>

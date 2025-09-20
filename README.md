@@ -1,14 +1,16 @@
-# Run and deploy your AI Studio app
+# Rey Don Jaime Web 2025
 
-This contains everything you need to run your app locally.
+Aplicación web para Rey Don Jaime con backend Django y frontend React.
 
-## Run Locally
+## Ejecutar Localmente
 
-**Prerequisites:**  Node.js
+**Prerrequisitos:** Node.js y Python
 
+### Características del proyecto
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+✅ Backend Django con API REST
+✅ Frontend React con TypeScript
+✅ Sistema multiidioma (Español/Inglés)
+✅ Panel de administración Django
+✅ Diseño responsive con Tailwind CSS
+✅ Integración con DeepL para traducciones

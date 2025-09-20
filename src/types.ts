@@ -1,8 +1,15 @@
-import React from 'react';
+import React from "react";
 
 export interface NavItem {
-  nameKey: string; 
+  nameKey: string;
   href: string;
+}
+
+export interface ProductTranslation {
+  language: string;
+  language_display: string;
+  nombre: string;
+  descripcion: string;
 }
 
 export interface Product {
@@ -14,6 +21,11 @@ export interface Product {
   fecha_creacion: string;
   fecha_actualizacion: string;
 
+  // Nuevas propiedades del backend
+  translations?: ProductTranslation[];
+  nombre_en?: string;
+  descripcion_en?: string;
+
   // Mantenemos campos existentes para compatibilidad con componentes
   nameKey?: string;
   imageUrl?: string;
@@ -21,9 +33,9 @@ export interface Product {
   descriptionKey?: string;
 
   // Atributos para el cuestionario
-  intensity?: 'suave' | 'medio' | 'intenso';
-  idealUsage?: string[]; 
-  attributes?: string[]; 
+  intensity?: "suave" | "medio" | "intenso";
+  idealUsage?: string[];
+  attributes?: string[];
 
   // Para las Cards de Producto estilo Acordeón
   subProducts?: Product[];
@@ -32,18 +44,18 @@ export interface Product {
 
 export interface ProcessStep {
   id: number;
-  titleKey: string; 
-  descriptionKey: string; 
+  titleKey: string;
+  descriptionKey: string;
   title: string; // Translated title
   description: string; // Translated description
-  image: string; 
+  image: string;
 }
 
 export interface AwardBase {
   id: string;
   titleKey: string;
   competitionKey: string;
-  year: string; 
+  year: string;
   descriptionKey: string;
   iconUrl: string;
 }
@@ -52,7 +64,6 @@ export interface Award extends AwardBase {
   competition: string;
   description: string;
 }
-
 
 export interface TestimonialBase {
   id: string;
@@ -67,7 +78,6 @@ export interface Testimonial extends TestimonialBase {
   role: string;
 }
 
-
 export interface ContactInfoItemBase {
   icon: React.ReactNode;
   labelKey: string;
@@ -75,10 +85,11 @@ export interface ContactInfoItemBase {
   hrefKey?: string;
 }
 
-export interface ContactInfoItem extends Omit<ContactInfoItemBase, 'labelKey' | 'valueKey' | 'hrefKey'> {
-    label: string;
-    value: string;
-    href?: string;
+export interface ContactInfoItem
+  extends Omit<ContactInfoItemBase, "labelKey" | "valueKey" | "hrefKey"> {
+  label: string;
+  value: string;
+  href?: string;
 }
 
 export interface Language {
@@ -87,9 +98,9 @@ export interface Language {
 }
 
 export interface QuickLinkItem {
-    nameKey: string;
-    href: string;
-    name?: string; 
+  nameKey: string;
+  href: string;
+  name?: string;
 }
 
 // Types for Oil Finder Quiz
@@ -101,7 +112,7 @@ export interface QuizQuestion {
   id: string;
   questionKey: string;
   options: QuizOption[];
-  answerProperty: keyof ProductAnswers; 
+  answerProperty: keyof ProductAnswers;
 }
 
 export interface ProductAnswers {
@@ -117,4 +128,4 @@ export interface RedesignedProductCardProps {
 }
 
 // Aria label key type
-export type AriaExploreCategory = 'products.aria.exploreCategory';
+export type AriaExploreCategory = "products.aria.exploreCategory";

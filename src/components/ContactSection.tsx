@@ -3,6 +3,7 @@ import { ContactInfoItemBase } from '../types'; // Use ContactInfoItemBase for d
 import { LocationIcon } from './icons/LocationIcon';
 import { EmailIcon } from './icons/EmailIcon';
 import { PhoneIcon } from './icons/PhoneIcon';
+import { FaxIcon } from './icons/FaxIcon';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -10,6 +11,7 @@ const contactInfoBase: ContactInfoItemBase[] = [
   { icon: <LocationIcon className="w-6 h-6 text-brand-gold" />, labelKey: 'contact.addressLabel', valueKey: 'contact.addressValue' },
   { icon: <EmailIcon className="w-6 h-6 text-brand-gold" />, labelKey: 'contact.emailLabel', valueKey: 'contact.emailValue', hrefKey: 'contact.emailHref' },
   { icon: <PhoneIcon className="w-6 h-6 text-brand-gold" />, labelKey: 'contact.phoneLabel', valueKey: 'contact.phoneValue', hrefKey: 'contact.phoneHref' },
+  { icon: <FaxIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.faxLabel', valueKey: 'contact.faxValue', hrefKey: 'contact.faxHref' },
 ];
 
 const sectionVariants = {
