@@ -7,46 +7,48 @@ import { useLanguage } from '../contexts/LanguageContext';
 const awardsBaseData: AwardBase[] = [
   { 
     id: '1', 
-    titleKey: 'awards.goldMedal.title', 
-    competitionKey: 'awards.goldMedal.competition', 
-    year: '2023', 
-    descriptionKey: 'awards.goldMedal.description',
-    iconUrl: 'https://picsum.photos/seed/goldmedal/64/64' 
+    titleKey: 'awards.design.title', 
+    competitionKey: 'awards.design.competition', 
+    descriptionKey: 'awards.design.description',
+    iconUrl: 'https://picsum.photos/seed/design/64/64' 
   },
   { 
     id: '2', 
-    titleKey: 'awards.bestEcological.title', 
-    competitionKey: 'awards.bestEcological.competition', 
-    year: '2022', 
-    descriptionKey: 'awards.bestEcological.description',
-    iconUrl: 'https://picsum.photos/seed/ecoproduct/64/64'
+    titleKey: 'awards.packaging.title', 
+    competitionKey: 'awards.packaging.competition', 
+    descriptionKey: 'awards.packaging.description',
+    iconUrl: 'https://picsum.photos/seed/packaging/64/64'
   },
   { 
     id: '3', 
-    titleKey: 'awards.silverMedal.title', 
-    competitionKey: 'awards.silverMedal.competition', 
-    year: '2023', 
-    descriptionKey: 'awards.silverMedal.description',
-    iconUrl: 'https://picsum.photos/seed/silvermedal/64/64'
+    titleKey: 'awards.quality.title', 
+    competitionKey: 'awards.quality.competition', 
+    descriptionKey: 'awards.quality.description',
+    iconUrl: 'https://picsum.photos/seed/quality/64/64'
   },
 ];
 
 const certificationsBaseData: AwardBase[] = [
     { 
     id: 'cert1', 
-    titleKey: 'awards.certIFS.title', 
-    competitionKey: 'awards.certIFS.competition', 
-    year: 'Vigente', // Consider if 'Vigente' needs translation: 'Current' / 'Active' etc.
-    descriptionKey: 'awards.certIFS.description',
-    iconUrl: 'https://picsum.photos/seed/ifs/64/64'
+    titleKey: 'awards.labeling.title', 
+    competitionKey: 'awards.labeling.competition', 
+    descriptionKey: 'awards.labeling.description',
+    iconUrl: 'https://picsum.photos/seed/labeling/64/64'
   },
    { 
     id: 'cert2', 
-    titleKey: 'awards.certCAECV.title', 
-    competitionKey: 'awards.certCAECV.competition', 
-    year: 'Vigente',
-    descriptionKey: 'awards.certCAECV.description',
-    iconUrl: 'https://picsum.photos/seed/caecv/64/64'
+    titleKey: 'awards.distribution.title', 
+    competitionKey: 'awards.distribution.competition', 
+    descriptionKey: 'awards.distribution.description',
+    iconUrl: 'https://picsum.photos/seed/distribution/64/64'
+  },
+   { 
+    id: 'cert3', 
+    titleKey: 'awards.competitiveness.title', 
+    competitionKey: 'awards.competitiveness.competition', 
+    descriptionKey: 'awards.competitiveness.description',
+    iconUrl: 'https://picsum.photos/seed/competitiveness/64/64'
   },
 ];
 

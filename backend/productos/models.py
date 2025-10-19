@@ -5,6 +5,7 @@ class Product(models.Model):
   nombre = models.CharField(max_length=200, verbose_name='Nombre del producto')
   descripcion = models.TextField(verbose_name='Descripción del producto')
   imagen = models.ImageField(upload_to='productos/', verbose_name='Imagen del producto', blank=True, null=True)
+  formatos = models.JSONField(default=list, verbose_name='Formatos disponibles', help_text='Lista de formatos disponibles para este producto')
   activo = models.BooleanField (default=True, verbose_name='Activo')
   fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
   fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name='Última actualización')

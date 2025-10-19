@@ -5,6 +5,7 @@ export interface ApiProduct {
   nombre: string;
   descripcion: string;
   imagen: string;
+  formatos: string[];
   activo: boolean;
   fecha_creacion: string;
   fecha_actualizacion: string;

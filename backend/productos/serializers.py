@@ -27,6 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'nombre',
             'descripcion',
             'imagen',
+            'formatos',
             'activo',
             'fecha_creacion',
             'fecha_actualizacion',

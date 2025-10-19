@@ -17,6 +17,7 @@ export interface Product {
   nombre: string;
   descripcion: string;
   imagen: string;
+  formatos: string[];
   activo: boolean;
   fecha_creacion: string;
   fecha_actualizacion: string;
@@ -55,7 +56,7 @@ export interface AwardBase {
   id: string;
   titleKey: string;
   competitionKey: string;
-  year: string;
+  year?: string;
   descriptionKey: string;
   iconUrl: string;
 }

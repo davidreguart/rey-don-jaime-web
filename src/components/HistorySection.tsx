@@ -43,6 +43,9 @@ const HistorySection: React.FC = () => {
                 <p>
                   {t('history.paragraph2')}
                 </p>
+                <p>
+                  {t('history.paragraph3')}
+                </p>
               </div>
               <motion.a
                 href="#contact" 

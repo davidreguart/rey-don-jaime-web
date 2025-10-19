@@ -21,7 +21,6 @@ const AwardCard: React.FC<AwardCardProps> = ({ award }) => {
       <img src={award.iconUrl} alt={t('awards.iconAlt', { awardTitle: title })} className="w-16 h-16 mb-4 text-brand-gold object-contain" />
       <h3 className="font-playfair text-xl font-bold text-brand-dark-text mb-2">{title}</h3>
       <p className="font-montserrat text-sm text-brand-brown font-semibold mb-1">{t(award.competitionKey)}</p>
-      <p className="font-montserrat text-sm text-brand-brown mb-3">{award.year}</p> {/* Year usually doesn't need translation */}
       <p className="font-montserrat text-sm text-brand-dark-text flex-grow">{t(award.descriptionKey)}</p>
     </motion.div>
   );

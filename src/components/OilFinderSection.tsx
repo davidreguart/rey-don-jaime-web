@@ -1,82 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
-import { QuizQuestion, ProductAnswers, Product } from '../types';
+import { QuizQuestion, Product } from '../types';
+import { productApi, ApiProduct } from '../api';
+
+interface ProductAnswers {
+  oilType?: string;
+  usage?: string;
+  format?: string;
+}
 import Modal from './Modal';
-// ProductCard is no longer directly used in the recommendation modal's main list.
+
+// Transform API product to Product type
+const transformApiProductToProduct = (apiProduct: ApiProduct): Product => ({
+  id: apiProduct.id,
+  nombre: apiProduct.nombre,
+  descripcion: apiProduct.descripcion,
+  imagen: apiProduct.imagen || '/images/placeholders/placeholder-product.jpg',
+  formatos: apiProduct.formatos || [],
+  activo: apiProduct.activo,
+  fecha_creacion: apiProduct.fecha_creacion,
+  fecha_actualizacion: apiProduct.fecha_actualizacion,
+  nombre_en: apiProduct.nombre_en,
+  descripcion_en: apiProduct.descripcion_en,
+  categoryKey: 'products.categories.default',
+  // Add properties for oil finder algorithm
+  nameKey: apiProduct.nombre,
+  imageUrl: apiProduct.imagen,
+  descriptionKey: apiProduct.descripcion,
+});
 
 interface OilFinderSectionProps {
   openProductModal: (product: Product) => void;
 }
 
-// Updated product data to match ProductsSection.tsx (sub-products are individual items for finder logic)
-const allProductsForFinder: Product[] = [
-  { 
-    id: '1', nameKey: 'products.oilOliveExtraVirgin.name', categoryKey: 'products.categories.extraVirgin', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-VirgenExtra.jpg',
-    descriptionKey: 'products.oilOliveExtraVirgin.description',
-    intensity: 'intenso', idealUsage: ['general', 'salads'], attributes: []
-  },
-  { 
-    id: '10', nameKey: 'products.oilOliveVirgin.name', categoryKey: 'products.categories.virgin', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-VirgenExtra.jpg',
-    descriptionKey: 'products.oilOliveVirgin.description',
-    intensity: 'medio', idealUsage: ['salads', 'general'], attributes: []
-  },
-  { 
-    id: '11', nameKey: 'products.oilOliveIntense.name', categoryKey: 'products.categories.oliveOil', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-VirgenExtra.jpg',
-    descriptionKey: 'products.oilOliveIntense.description',
-    intensity: 'intenso', idealUsage: ['general', 'frying'], attributes: []
-  },
-  { 
-    id: '12', nameKey: 'products.oilOliveMild.name', categoryKey: 'products.categories.oliveOil', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-VirgenExtra.jpg',
-    descriptionKey: 'products.oilOliveMild.description',
-    intensity: 'suave', idealUsage: ['general', 'baking'], attributes: []
-  },
-  { 
-    id: '2', nameKey: 'products.oilPomace.name', categoryKey: 'products.categories.refined', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-Orujo.jpg',
-    descriptionKey: 'products.oilPomace.description',
-    intensity: 'medio', idealUsage: ['frying'], attributes: []
-  },
-  { 
-    id: '3', nameKey: 'products.oilSunflowerRefined.name', categoryKey: 'products.categories.refined', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-Girasol.jpg',
-    descriptionKey: 'products.oilSunflowerRefined.description',
-    intensity: 'suave', idealUsage: ['baking', 'salads'], attributes: []
-  },
-  { 
-    id: '4', nameKey: 'products.oilSunflowerHighOleic.name', categoryKey: 'products.categories.refined', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-GirasolOleico.jpg',
-    descriptionKey: 'products.oilSunflowerHighOleic.description',
-    intensity: 'suave', idealUsage: ['frying'], attributes: ['high_oleic']
-  },
-  { 
-    id: '6', nameKey: 'products.oilSoyRefined.name', categoryKey: 'products.categories.refined', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-Soja.jpg',
-    descriptionKey: 'products.oilSoyRefined.description',
-    intensity: 'suave', idealUsage: ['salads'], attributes: ['omega3_6']
-  },
-  { 
-    id: '8', nameKey: 'products.oilEcological.name', categoryKey: 'products.categories.ecological', 
-    imageUrl: 'https://www.aceitesreydonjaime.com/rs/especial_02.jpg',
-    descriptionKey: 'products.oilEcological.description',
-    intensity: 'medio', idealUsage: ['general', 'salads'], attributes: ['organic']
-  },
-];
+// Helper function to determine oil type from product name
+const getOilTypeFromName = (nombre: string): string => {
+  const lowerName = nombre.toLowerCase();
+  if (lowerName.includes('virgen extra')) return 'extraVirgin';
+  if (lowerName.includes('virgen')) return 'virgin';
+  if (lowerName.includes('girasol') || lowerName.includes('soja') || lowerName.includes('orujo')) return 'seeds';
+  return 'virgin'; // default
+};
+
+// Helper function to determine ideal usage from product name and description
+const getIdealUsageFromProduct = (nombre: string, descripcion: string): string[] => {
+  const text = (nombre + ' ' + descripcion).toLowerCase();
+  const usage: string[] = [];
+  
+  if (text.includes('fritura') || text.includes('freir') || text.includes('freidora') || text.includes('altas temperaturas')) {
+    usage.push('frying');
+  }
+  if (text.includes('ensalada') || text.includes('aliño') || text.includes('crudo')) {
+    usage.push('salads');
+  }
+  if (text.includes('repostería') || text.includes('hornear')) {
+    usage.push('baking');
+  }
+  if (text.includes('cocina') || text.includes('uso diario') || usage.length === 0) {
+    usage.push('general');
+  }
+  
+  return usage;
+};
+
+// Helper function to determine format from product formats
+const getFormatFromProduct = (formatos: string[]): string[] => {
+  const formats: string[] = [];
+  
+  formatos.forEach(formato => {
+    const size = formato.toLowerCase();
+    if (size.includes('250ml') || size.includes('10ml')) formats.push('small');
+    if (size.includes('500ml') || size.includes('750ml') || size.includes('1l')) formats.push('medium');
+    if (size.includes('5l') || size.includes('10l') || size.includes('25l')) formats.push('large');
+  });
+  
+  return formats.length > 0 ? formats : ['medium']; // default to medium
+};
 
 
 const quizQuestions: QuizQuestion[] = [
     {
         id: 'q1',
-        questionKey: 'oilFinder.questionIntensity.title',
-        answerProperty: 'intensity',
+        questionKey: 'oilFinder.questionType.title',
+        answerProperty: 'oilType',
         options: [
-            { value: 'suave', labelKey: 'oilFinder.intensity.suave' },
-            { value: 'medio', labelKey: 'oilFinder.intensity.medio' },
-            { value: 'intenso', labelKey: 'oilFinder.intensity.intenso' },
+            { value: 'extraVirgin', labelKey: 'oilFinder.type.extraVirgin' },
+            { value: 'virgin', labelKey: 'oilFinder.type.virgin' },
+            { value: 'seeds', labelKey: 'oilFinder.type.seeds' },
+            { value: 'notSure', labelKey: 'oilFinder.type.notSure' },
         ],
     },
     {
@@ -92,13 +104,13 @@ const quizQuestions: QuizQuestion[] = [
     },
     {
         id: 'q3',
-        questionKey: 'oilFinder.questionAttribute.title',
-        answerProperty: 'attribute',
+        questionKey: 'oilFinder.questionFormat.title',
+        answerProperty: 'format',
         options: [
-            { value: 'organic', labelKey: 'oilFinder.attribute.organic' },
-            { value: 'high_oleic', labelKey: 'oilFinder.attribute.highOleic' },
-            { value: 'omega3_6', labelKey: 'oilFinder.attribute.omega36' },
-            { value: 'none', labelKey: 'oilFinder.attribute.none' },
+            { value: 'small', labelKey: 'oilFinder.format.small' },
+            { value: 'medium', labelKey: 'oilFinder.format.medium' },
+            { value: 'large', labelKey: 'oilFinder.format.large' },
+            { value: 'noPreference', labelKey: 'oilFinder.format.noPreference' },
         ],
     },
 ];
@@ -138,12 +150,36 @@ const questionTransitionVariants = {
 const OilFinderSection: React.FC<OilFinderSectionProps> = ({ openProductModal }) => {
   const { t } = useLanguage();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<ProductAnswers>({});
+  const [answers, setAnswers] = useState<ProductAnswers>({
+    oilType: '',
+    usage: '',
+    format: ''
+  });
   const [recommendedOils, setRecommendedOils] = useState<Product[]>([]);
   const [isRecommendationModalOpen, setIsRecommendationModalOpen] = useState(false);
   const [animationDirection, setAnimationDirection] = useState(1);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  // Load products from API on component mount
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const apiProducts = await productApi.getProducts();
+        const transformedProducts = apiProducts.map(transformApiProductToProduct);
+        setAllProducts(transformedProducts);
+      } catch (error) {
+        console.error('Error loading products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   const handleOptionSelect = (answerProperty: keyof ProductAnswers, value: string) => {
     setAnswers(prev => ({ ...prev, [answerProperty]: value }));
@@ -154,31 +190,85 @@ const OilFinderSection: React.FC<OilFinderSectionProps> = ({ openProductModal })
       setAnimationDirection(1);
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
-      const matches = allProductsForFinder.filter(product => {
+      const matches = allProducts.filter(product => {
+        const oilType = getOilTypeFromName(product.nombre);
+        const idealUsage = getIdealUsageFromProduct(product.nombre, product.descripcion || '');
+        const format = getFormatFromProduct(product.formatos || []);
         let score = 0;
         let criteriaCount = 0;
 
-        if (answers.intensity && product.intensity) {
+        // Evaluar tipo de aceite
+        if (answers.oilType && oilType) {
             criteriaCount++;
-            if (product.intensity === answers.intensity) score++;
-        }
-        if (answers.usage && product.idealUsage) {
-            criteriaCount++;
-            if (product.idealUsage.includes(answers.usage)) score++;
-        }
-        if (answers.attribute && answers.attribute !== 'none' && product.attributes) {
-            criteriaCount++;
-            if (product.attributes.includes(answers.attribute)) score++;
-        } else if (answers.attribute === 'none') {
-            criteriaCount++; 
-            score++; 
+            if (oilType === answers.oilType) {
+              score += 2; // Peso mayor para el tipo de aceite
+            } else if (answers.oilType === 'notSure') {
+              score += 1; // Puntuación parcial si no está seguro
+            }
         }
         
-        if (criteriaCount === 0 && !product.intensity && !product.idealUsage && !product.attributes) return true;
-        if (criteriaCount === 0) return false; 
-        return score >= Math.max(1, criteriaCount -1); 
+        // Evaluar uso ideal
+        if (answers.usage && idealUsage) {
+            criteriaCount++;
+            if (idealUsage.includes(answers.usage)) {
+              score += 2;
+            } else if (answers.usage === 'general' || idealUsage.includes('general')) {
+              score += 1; // Puntuación parcial para uso general
+            }
+        }
+        
+        // Evaluar formato preferido
+        if (answers.format && format) {
+            criteriaCount++;
+            if (format.includes(answers.format)) {
+              score += 1;
+            } else if (answers.format === 'noPreference') {
+              score += 1; // Puntuación completa si no tiene preferencia
+            }
+        }
+        
+        // Si no hay criterios, mostrar todos los productos
+        if (criteriaCount === 0) return true;
+        
+        // Calcular puntuación mínima requerida (al menos 50% de coincidencia)
+        const minScore = Math.ceil(criteriaCount * 1.5);
+        return score >= minScore;
       });
-      setRecommendedOils(matches.length > 0 ? matches.slice(0, 3) : []); // Show top 3 matches
+      
+      // Ordenar por puntuación y tomar los mejores 3
+      const sortedMatches = matches.sort((a, b) => {
+        let scoreA = 0, scoreB = 0;
+        
+        const oilTypeA = getOilTypeFromName(a.nombre);
+        const oilTypeB = getOilTypeFromName(b.nombre);
+        const idealUsageA = getIdealUsageFromProduct(a.nombre, a.descripcion || '');
+        const idealUsageB = getIdealUsageFromProduct(b.nombre, b.descripcion || '');
+        const formatA = getFormatFromProduct(a.formatos || []);
+        const formatB = getFormatFromProduct(b.formatos || []);
+        
+        if (answers.oilType) {
+          if (oilTypeA === answers.oilType) scoreA += 2;
+          else if (answers.oilType === 'notSure') scoreA += 1;
+          if (oilTypeB === answers.oilType) scoreB += 2;
+          else if (answers.oilType === 'notSure') scoreB += 1;
+        }
+        
+        if (answers.usage) {
+          if (idealUsageA.includes(answers.usage)) scoreA += 2;
+          else if (answers.usage === 'general' || idealUsageA.includes('general')) scoreA += 1;
+          if (idealUsageB.includes(answers.usage)) scoreB += 2;
+          else if (answers.usage === 'general' || idealUsageB.includes('general')) scoreB += 1;
+        }
+        
+        if (answers.format) {
+          if (formatA.includes(answers.format) || answers.format === 'noPreference') scoreA += 1;
+          if (formatB.includes(answers.format) || answers.format === 'noPreference') scoreB += 1;
+        }
+        
+        return scoreB - scoreA;
+      });
+      
+      setRecommendedOils(sortedMatches.length > 0 ? sortedMatches.slice(0, 3) : allProducts.slice(0, 3));
       setIsRecommendationModalOpen(true);
     }
   };
@@ -364,15 +454,16 @@ const OilFinderSection: React.FC<OilFinderSectionProps> = ({ openProductModal })
               {recommendedOils.map(oil => (
                 <li key={oil.id} className="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                   <img 
-                      src={oil.imageUrl} 
-                      alt={t(oil.nameKey)} 
+                      src={oil.imagen || '/images/placeholders/placeholder-product.jpg'} 
+                      alt={oil.nombre} 
                       className="w-20 h-20 object-contain rounded-md mr-4 flex-shrink-0"
                   />
                   <div className="flex-grow">
-                    <h4 className="font-playfair text-lg font-semibold text-brand-dark-text">{t(oil.nameKey)}</h4>
+                    <h4 className="font-playfair text-lg font-semibold text-brand-dark-text">{oil.nombre}</h4>
                     {oil.categoryKey && (
                       <p className="text-sm text-brand-brown">{t(oil.categoryKey)}</p>
                     )}
+                    <p className="text-sm text-gray-600 mt-1">{oil.descripcion}</p>
                   </div>
                   <motion.button
                     onClick={() => handleViewRecommendedDetails(oil)}

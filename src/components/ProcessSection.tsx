@@ -9,8 +9,6 @@ const processStepsBaseData: Omit<ProcessStep, 'title' | 'description'>[] = [
   { id: 2, titleKey: 'process.step2.title', descriptionKey: 'process.step2.description', image: 'https://www.aceitesreydonjaime.com/rs/bg_home_03.jpg' },
   { id: 3, titleKey: 'process.step3.title', descriptionKey: 'process.step3.description', image: 'https://www.aceitesreydonjaime.com/rs/bg_home_04.jpg' },
   { id: 4, titleKey: 'process.step4.title', descriptionKey: 'process.step4.description', image: 'https://www.aceitesreydonjaime.com/rs/galeri_05.jpg' },
-  { id: 5, titleKey: 'process.step5.title', descriptionKey: 'process.step5.description', image: 'https://www.aceitesreydonjaime.com/rs/bg_home_02.jpg' }, // Reused
-  { id: 6, titleKey: 'process.step6.title', descriptionKey: 'process.step6.description', image: 'https://www.aceitesreydonjaime.com/rs/bg_home_03.jpg' }, // Reused
 ];
 
 const sectionVariants = {

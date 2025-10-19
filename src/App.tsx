@@ -62,7 +62,7 @@ const App: React.FC = () => {
     setSelectedProductForModal(null);
   };
 
-  // Funciones para obtener el texto según el idioma
+  // Functions to get text according to language
   const getProductName = (product: Product) => {
     if (language === 'en' && product.nombre_en) {
       return product.nombre_en;
@@ -139,33 +139,65 @@ const App: React.FC = () => {
           </section>
         </main>
         <Footer />
-      
-      {/* Main Product Detail Modal controlled from App */}
-      {selectedProductForModal && (
-        <Modal 
-            isOpen={isProductModalOpen} 
+        
+        {/* Main Product Detail Modal controlled from App */}
+        {isProductModalOpen && selectedProductForModal && (
+          <Modal
+            isOpen={isProductModalOpen}
             onClose={closeProductModal}
             title={getProductName(selectedProductForModal)}
-        >
-          <div className="flex flex-col md:flex-row gap-6 items-start">
-            <img 
-              src={selectedProductForModal.imageUrl} 
-              alt={getProductName(selectedProductForModal)} 
-              className="w-full md:w-1/3 h-auto max-h-96 object-contain rounded-lg shadow-md"
-            />
-            <div className="md:w-2/3">
-              {selectedProductForModal.categoryKey && (
-                <p className="text-sm font-semibold text-brand-gold mb-2">
-                  {t(selectedProductForModal.categoryKey)}
-                </p>
-              )}
-              <p className="font-montserrat text-brand-dark-text leading-relaxed whitespace-pre-line">
-                {getProductDescription(selectedProductForModal)}
-              </p>
+          >
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Product image */}
+              <div className="md:w-1/2">
+                <img
+                  src={selectedProductForModal.imagen}
+                  alt={getProductName(selectedProductForModal)}
+                  className="w-full aspect-square object-contain rounded-lg"
+                />
+              </div>
+              
+              {/* Product information */}
+              <div className="md:w-1/2 space-y-4">
+                <div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {getProductDescription(selectedProductForModal)}
+                  </p>
+                </div>
+                
+                {/* Available formats */}
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                    {language === 'es' ? 'Formatos disponibles' : 'Available formats'}
+                  </h4>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(selectedProductForModal.formatos && selectedProductForModal.formatos.length > 0 
+                      ? selectedProductForModal.formatos 
+                      : ['10 ml', '250 ml', '500 ml', '750 ml', '1 L', '5 L']
+                    ).map((format) => (
+                      <button
+                        key={format}
+                        className="bg-brand-green text-white py-2 px-3 rounded-md text-sm font-medium cursor-default"
+                      >
+                        {format}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Close button */}
+                <div className="pt-4">
+                  <button
+                    onClick={closeProductModal}
+                    className="w-full bg-brand-gold text-white py-3 px-6 rounded-md text-lg font-semibold hover:bg-yellow-600 transition-colors duration-200"
+                  >
+                    {language === 'es' ? 'Cerrar' : 'Close'}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </Modal>
-      )}
+          </Modal>
+        )}
 
         {/* Scroll to Top Button */}
         <AnimatePresence>
@@ -181,7 +213,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.3 }}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
               </svg>
             </motion.button>
           )}

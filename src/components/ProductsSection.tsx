@@ -11,40 +11,19 @@ interface ProductsSectionProps {
   openProductModal: (product: Product) => void;
 }
 
-// Función para transformar datos de la API al formato del frontend
-const transformApiProductToProduct = (apiProduct: ApiProduct): Product => {
-  //Manejamos primero imagen null o undefined
-  const getImageUrl = (image: string | null): string => {
-    if (!image) {
-      return '/images/placeholders/placeholder-product.jpg';
-    }
-    return image;
-  };
-
-  return {
-    id: apiProduct.id,
-    nombre: apiProduct.nombre,
-    descripcion: apiProduct.descripcion,
-    imagen: apiProduct.imagen || '/images/placeholders/placeholder-product.jpg',
-    activo: apiProduct.activo,
-    fecha_creacion: apiProduct.fecha_creacion,
-    fecha_actualizacion: apiProduct.fecha_actualizacion,
-    
-    // Campos de traducción
-    nombre_en: apiProduct.nombre_en,
-    descripcion_en: apiProduct.descripcion_en,
-    
-    // Campos de compatibilidad
-    nameKey: apiProduct.nombre,
-    imageUrl: getImageUrl(apiProduct.imagen),
-    descriptionKey: apiProduct.descripcion,
-    categoryKey: 'products.categories.general',
-    intensity: 'medio',
-    idealUsage: ['general'],
-    attributes: [],
-    isParentProduct: false, // Los productos de la API no son productos padre por ahora
-  };
-};
+const transformApiProductToProduct = (apiProduct: ApiProduct): Product => ({
+  id: apiProduct.id,
+  nombre: apiProduct.nombre,
+  descripcion: apiProduct.descripcion,
+  imagen: apiProduct.imagen || '/images/placeholders/placeholder-product.jpg',
+  formatos: apiProduct.formatos || [],
+  activo: apiProduct.activo,
+  fecha_creacion: apiProduct.fecha_creacion,
+  fecha_actualizacion: apiProduct.fecha_actualizacion,
+  nombre_en: apiProduct.nombre_en,
+  descripcion_en: apiProduct.descripcion_en,
+  categoryKey: apiProduct.categoryKey || 'products.categories.default',
+});
 
 // Datos mock como fallback (mantenemos algunos para compatibilidad)
 const fallbackProductsData: Product[] = [
@@ -53,6 +32,7 @@ const fallbackProductsData: Product[] = [
     nombre: 'Aceites de Oliva',
     descripcion: 'Categoría de aceites de oliva',
     imagen: 'https://www.aceitesreydonjaime.com/rs/bg_home_02.jpg',
+    formatos: [],
     activo: true,
     fecha_creacion: new Date().toISOString(),
     fecha_actualizacion: new Date().toISOString(),
@@ -67,6 +47,7 @@ const fallbackProductsData: Product[] = [
         nombre: 'Aceite de Oliva Virgen Extra',
         descripcion: 'Aceite de oliva virgen extra de primera calidad',
         imagen: 'https://www.aceitesreydonjaime.com/rs/ReyDonJaime-VirgenExtra.jpg',
+        formatos: ['250ml', '500ml', '750ml', '1L'],
         activo: true,
         fecha_creacion: new Date().toISOString(),
         fecha_actualizacion: new Date().toISOString(),
@@ -145,7 +126,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ openProductModal }) =
               <div className="h-10 bg-gray-200 rounded-md animate-pulse mb-4"></div>
               <div className="h-6 bg-gray-200 rounded-md animate-pulse max-w-2xl mx-auto"></div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="h-48 bg-gray-200 animate-pulse"></div>
@@ -207,7 +188,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ openProductModal }) =
                 {t('products.subtitle')}
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
               {products.map((product) => (
                 <ProductCard 
                   key={product.id} 
