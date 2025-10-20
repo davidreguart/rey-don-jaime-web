@@ -83,14 +83,12 @@ export interface ContactInfoItemBase {
   icon: React.ReactNode;
   labelKey: string;
   valueKey: string;
-  hrefKey?: string;
 }
 
 export interface ContactInfoItem
-  extends Omit<ContactInfoItemBase, "labelKey" | "valueKey" | "hrefKey"> {
+  extends Omit<ContactInfoItemBase, "labelKey" | "valueKey"> {
   label: string;
   value: string;
-  href?: string;
 }
 
 export interface Language {
@@ -102,6 +100,7 @@ export interface QuickLinkItem {
   nameKey: string;
   href: string;
   name?: string;
+  target?: string;
 }
 
 // Types for Oil Finder Quiz

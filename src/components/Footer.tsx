@@ -8,9 +8,9 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const footerContactInfoBase: ContactInfoItemBase[] = [
   { icon: <LocationIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.addressLabel', valueKey: 'contact.addressValue' },
-  { icon: <EmailIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.emailLabel', valueKey: 'contact.emailValue', hrefKey: 'contact.emailHref' },
-  { icon: <PhoneIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.phoneLabel', valueKey: 'contact.phoneValue', hrefKey: 'contact.phoneHref' },
-  { icon: <FaxIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.faxLabel', valueKey: 'contact.faxValue', hrefKey: 'contact.faxHref' },
+  { icon: <EmailIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.emailLabel', valueKey: 'contact.emailValue' },
+  { icon: <PhoneIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.phoneLabel', valueKey: 'contact.phoneValue' },
+  { icon: <FaxIcon className="w-5 h-5 text-brand-gold" />, labelKey: 'contact.faxLabel', valueKey: 'contact.faxValue' },
 ];
 
 const quickLinksBase: QuickLinkItem[] = [
@@ -19,16 +19,21 @@ const quickLinksBase: QuickLinkItem[] = [
   { nameKey: 'footer.links.awardsCertifications', href: '#awards' },
   { nameKey: 'footer.links.aboutUs', href: '#history' },
   { nameKey: 'footer.links.contact', href: '#contact' },
+  { nameKey: 'footer.links.legalNotice', href: '#' },
+  { nameKey: 'footer.links.solarInstallation', href: 'https://www.aceitesreydonjaime.com/assets/Instalaci%C3%B3n-Fotovoltaica.pdf', target: '_blank' },
 ];
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenLegalNotice: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onOpenLegalNotice }) => {
   const { t } = useLanguage();
 
   const footerContactInfo = footerContactInfoBase.map(item => ({
       ...item,
       label: t(item.labelKey),
-      value: t(item.valueKey),
-      href: item.hrefKey ? t(item.hrefKey) : undefined
+      value: t(item.valueKey)
   }));
 
   const quickLinks = quickLinksBase.map(link => ({
@@ -65,7 +70,23 @@ const Footer: React.FC = () => {
                 <ul className="space-y-2">
                 {quickLinks.map(link => (
                     <li key={link.nameKey}>
-                    <a href={link.href} className="font-montserrat text-sm hover:text-brand-gold transition-colors">{link.name}</a>
+                    {link.nameKey === 'footer.links.legalNotice' ? (
+                        <button 
+                            onClick={onOpenLegalNotice}
+                            className="font-montserrat text-sm hover:text-brand-gold transition-colors text-left"
+                        >
+                            {link.name}
+                        </button>
+                    ) : (
+                        <a 
+                            href={link.href} 
+                            className="font-montserrat text-sm hover:text-brand-gold transition-colors"
+                            target={link.target}
+                            rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+                        >
+                            {link.name}
+                        </a>
+                    )}
                     </li>
                 ))}
                 </ul>
@@ -79,11 +100,7 @@ const Footer: React.FC = () => {
                     <li key={item.labelKey} className="flex items-start">
                     <div className="flex-shrink-0 mt-1 text-brand-gold">{item.icon}</div>
                     <div className="ml-3">
-                        {item.href ? (
-                        <p className="font-montserrat text-sm pointer-events-none">{item.value}</p>
-                        ) : (
-                        <p className="font-montserrat text-sm">{item.value}</p>
-                        )}
+                        <p className="font-montserrat text-sm cursor-text">{item.value}</p>
                     </div>
                     </li>
                 ))}

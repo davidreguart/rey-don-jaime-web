@@ -9,9 +9,10 @@ import TestimonialsSection from './components/TestimonialsSection';
 import OilFinderSection from './components/OilFinderSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
-import { useLanguage } from './contexts/LanguageContext';
-import { Product } from './types';
 import Modal from './components/Modal';
+import LegalNoticeModal from './components/LegalNoticeModal';
+import { Product } from './types';
+import { useLanguage } from './contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
@@ -22,6 +23,9 @@ const App: React.FC = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Legal Notice Modal state
+  const [isLegalNoticeModalOpen, setIsLegalNoticeModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +64,14 @@ const App: React.FC = () => {
   const closeProductModal = () => {
     setIsProductModalOpen(false);
     setSelectedProductForModal(null);
+  };
+
+  const openLegalNoticeModal = () => {
+    setIsLegalNoticeModalOpen(true);
+  };
+
+  const closeLegalNoticeModal = () => {
+    setIsLegalNoticeModalOpen(false);
   };
 
   // Functions to get text according to language
@@ -138,7 +150,7 @@ const App: React.FC = () => {
             <ContactSection />
           </section>
         </main>
-        <Footer />
+        <Footer onOpenLegalNotice={openLegalNoticeModal} />
         
         {/* Main Product Detail Modal controlled from App */}
         {isProductModalOpen && selectedProductForModal && (
@@ -198,6 +210,13 @@ const App: React.FC = () => {
             </div>
           </Modal>
         )}
+
+        {/* Legal Notice Modal */}
+        <LegalNoticeModal 
+          isOpen={isLegalNoticeModalOpen}
+          onClose={closeLegalNoticeModal}
+          language={language}
+        />
 
         {/* Scroll to Top Button */}
         <AnimatePresence>

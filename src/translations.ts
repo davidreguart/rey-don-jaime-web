@@ -7,7 +7,7 @@ export const availableLanguages: Language[] = [
   { code: 'en', name: 'English' },
 ];
 
-export const translations: Record<string, Record<string, string>> = {
+export const translations: Record<string, Record<string, string | any>> = {
   es: {
     // Navbar
     'navbar.home': 'Inicio',
@@ -30,7 +30,7 @@ export const translations: Record<string, Record<string, string>> = {
     'hero.ctaOurProcess': 'Nuestro Proceso',
 
     // Products Section
-    'products.title': 'Nuestros Productos', 
+    'products.title': 'Nuestros Aceites', 
     'products.subtitle': 'Descubre nuestra gama de aceites galardonados, elaborados con cuidado y tradición',
     'products.ctaRequestInfo': 'Solicitar Información',
     'products.viewDetailsButton': 'Ver Detalles',
@@ -166,9 +166,9 @@ export const translations: Record<string, Record<string, string>> = {
     'contact.alert.thankYou': 'Gracias {{name}}, hemos recibido tu consulta. Te contactaremos a {{email}}.',
     'contact.alert.success': '¡Mensaje enviado correctamente! Te contactaremos pronto.',
     'contact.alert.error': 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.',
-    'contact.errors.nameRequired': 'El nombre debe tener al menos 2 caracteres',
-    'contact.errors.emailInvalid': 'Por favor, introduce un email válido',
-    'contact.errors.messageRequired': 'El mensaje debe tener al menos 10 caracteres',
+    'contact.errors.nameRequired': 'Por favor, introduce tu nombre completo',
+    'contact.errors.emailInvalid': 'Introduce una dirección de correo electrónico válida',
+    'contact.errors.messageRequired': 'Cuéntanos en qué podemos ayudarte',
 
     // Footer
     'footer.aboutText': 'Aceites de oliva premium elaborados con tradición y excelencia desde 1940 en los soleados olivares de Alicante, España.',
@@ -178,11 +178,51 @@ export const translations: Record<string, Record<string, string>> = {
     'footer.links.awardsCertifications': 'Premios y Certificaciones',
     'footer.links.aboutUs': 'Sobre Nosotros',
     'footer.links.contact': 'Contacto',
+    'footer.links.legalNotice': 'Aviso Legal',
+    'footer.links.solarInstallation': 'Instalación Fotovoltáica',
     'footer.contactUsTitle': 'Contáctanos',
     'footer.copyrightText': 'Aceites Rey Don Jaime. Todos los derechos reservados.',
 
     // Modal
     'modal.closeAriaLabel': 'Cerrar modal',
+
+    // Legal Notice
+    legalNotice: {
+      title: 'Aviso Legal',
+      companyInfo: {
+        title: 'Condiciones generales de uso del sitio web',
+        company: 'Aceites Vicente Perez S.L.',
+        address: 'Pol Ind Norte - C/Ullals 7, 46440 Almussafes (Valencia)',
+        cif: 'CIF B46214888',
+        representative: 'Francisto Sellés Cardona',
+        nif: 'NIF 21676171M',
+        registry: 'Aceites Vicente Perez S.L. está inscrita en el Registro Mercantil de Valencia - Tomo 1331 Gral, Libro 441, sección 4º, folio 225 Hoja 8277 Inscripción 1º.'
+      },
+      introduction: 'Aceites Vicente Perez S.L. (en adelante Aceites Vicente Perez S.L. ) con domicilio en Pol Ind Norte - C/Ullals 7, 46440 Almussafes (Valencia) con CIF B46214888 representada por Francisto Sellés Cardona con NIF 21676171M pone a disposición en su sitio web aceitesreydonjaime.com determinados contenidos de carácter informativo sobre sus actividades.',
+      sections: {
+        accessConditions: {
+          title: 'PRIMERA.- CONDICIONES DE ACCESO Y USO',
+          content: '1.1.-La utilización del sitio web de Aceites Vicente Perez S.L. no conlleva la obligatoriedad de inscripción del USUARIO, salvo si este USUARIO desee utilizar la base de datos de artículos existentes en aceitesreydonjaime.com donde será preciso que se registre cubriendo un formulario básico, ésta suscripción se regirá por las condiciones generales específicas. Las condiciones de acceso y uso del presente sitio web se rigen estrictamente por la legalidad vigente y por el principio de buena fe comprometiéndose el USUARIO a realizar un buen uso de la web. Quedan prohibidos todos los actos que vulneren la legalidad, derechos o intereses de terceros: derecho a la intimidad, protección de datos, propiedad intelectual etc.'
+        },
+        contents: {
+          title: 'SEGUNDA.- CONTENIDOS.-',
+          content: 'Los contenidos incorporados en este sitio web han sido elaborados e incluidos por: 2.1.- Aceites Vicente Perez S.L. utilizando fuentes internas y externas de tal modo que Aceites Vicente Perez S.L. únicamente se hace responsable por los contenidos elaborados de forma interna. 2.2.- Aceites Vicente Perez S.L. se reserva el derecho a modificar en cualquier momento los contenidos existentes en su sitio web.'
+        },
+        copyrights: {
+          title: 'TERCERA.- DERECHOS DE AUTOR Y MARCA.-',
+          content: 'Aceites Vicente Perez S.L. informa que el sitio web aceitesreydonjaime.com los contenidos propios, la programación y el diseño del sitio web se encuentra plenamente protegido por los derechos de autor, quedando expresamente prohibida toda reproducción, comunicación, distribución y transformación de los referidos elementos protegidos salvo consentimiento expreso de Aceites Vicente Perez S.L.. Aceites Vicente Perez S.L. utiliza fuentes externas para la elaboración de sus contenidos en determinadas ocasiones y también establece links o hiperenlaces a artículos o informaciones de terceros citando siempre la fuente. El legítimo titular de los derechos de autor de estas informaciones así incluidas podrá solicitar en cualquier momento la eliminación de las referidas referencias.'
+        },
+        jurisdiction: {
+          title: 'CUARTA.- JURISDICCIÓN Y LEY APLICABLE.-',
+          content: 'Las presentes condiciones generales se rigen por la legislación española. Son competentes para resolver toda controversia o conflicto que se derive de las presentes condiciones generales los Juzgados de Valencia renunciando expresamente el USUARIO a cualquier otro fuero que pudiera corresponderle.'
+        },
+        finalProvisions: {
+          title: 'QUINTA.-',
+          content: 'En caso de que cualquier cláusula del presente documento sea declarada nula, las demás cláusulas seguirán vigentes y se interpretarán teniendo en cuenta la voluntad de las partes y la finalidad misma de las presentes condiciones. Aceites Vicente Perez S.L. podrá no ejercitar alguno de los derechos y facultades conferidos en este documento lo que no implicará en ningún caso la renuncia a los mismos salvo reconocimiento expreso por parte de Aceites Vicente Perez S.L.'
+        }
+      },
+      closeButton: 'Cerrar'
+    },
   },
   en: {
     // Navbar
@@ -206,7 +246,7 @@ export const translations: Record<string, Record<string, string>> = {
     'hero.ctaOurProcess': 'Our Process',
 
     // Products Section
-    'products.title': 'Our Products', 
+    'products.title': 'Our Oils', 
     'products.subtitle': 'Discover our range of award-winning oils, crafted with care and tradition',
     'products.ctaRequestInfo': 'Request Information',
     'products.viewDetailsButton': 'View Details',
@@ -339,9 +379,9 @@ export const translations: Record<string, Record<string, string>> = {
     'contact.alert.thankYou': 'Thank you {{name}}, we have received your inquiry. We will contact you at {{email}}.',
     'contact.alert.success': 'Message sent successfully! We will contact you soon.',
     'contact.alert.error': 'Error sending message. Please try again.',
-    'contact.errors.nameRequired': 'Name must be at least 2 characters long',
+    'contact.errors.nameRequired': 'Please enter your full name',
     'contact.errors.emailInvalid': 'Please enter a valid email address',
-    'contact.errors.messageRequired': 'Message must be at least 10 characters long',
+    'contact.errors.messageRequired': 'Please tell us how we can help you',
 
     // Footer
     'footer.aboutText': 'Premium olive oils crafted with tradition and excellence since 1940 in the sunny olive groves of Alicante, Spain.',
@@ -351,10 +391,50 @@ export const translations: Record<string, Record<string, string>> = {
     'footer.links.awardsCertifications': 'Awards & Certifications',
     'footer.links.aboutUs': 'About Us',
     'footer.links.contact': 'Contact',
+    'footer.links.legalNotice': 'Legal Notice',
+    'footer.links.solarInstallation': 'Solar Installation',
     'footer.contactUsTitle': 'Contact Us',
     'footer.copyrightText': 'Aceites Rey Don Jaime. All rights reserved.',
     
     // Modal
     'modal.closeAriaLabel': 'Close modal',
-  },
+
+    // Legal Notice
+    legalNotice: {
+      title: 'Legal Notice',
+      companyInfo: {
+        title: 'General Terms and Conditions of Use of the Website Aceites Vicente Pérez S.L. – aceitesreydonjaime.com',
+        company: 'Aceites Vicente Pérez S.L.',
+        address: 'Polígono Industrial Norte – Calle Ullals 7, 46440 Almussafes (Valencia), Spain',
+        cif: 'VAT number B46214888',
+        representative: 'Francisco Sellés Cardona',
+        nif: 'holder of National ID 21676171M',
+        registry: 'Aceites Vicente Pérez S.L. is registered in the Commercial Register of Valencia, Volume 1331 General, Book 441, Section 4, Page 225, Sheet V-8277, Entry 1.'
+      },
+      introduction: 'Aceites Vicente Pérez S.L. (hereinafter referred to as "Aceites Vicente Pérez S.L."), with registered office at Polígono Industrial Norte – Calle Ullals 7, 46440 Almussafes (Valencia), Spain, VAT number B46214888, represented by Francisco Sellés Cardona, holder of National ID 21676171M, makes available on its website aceitesreydonjaime.com certain informational content regarding its activities. These general conditions govern exclusively the use of the website aceitesreydonjaime.com by the USERS who access it. The present general conditions are displayed to the USER on the website aceitesreydonjaime.com on every page and every time a USER enters their data in any of the existing forms, so that they may read, print, archive, and accept them via the Internet. The USER will not be able to effectively submit their data without having previously accepted these conditions. Access to the website of Aceites Vicente Pérez S.L. implies full and unreserved acceptance of these general terms of use, which the USER declares to understand in their entirety. The USER undertakes not to use the website or the services offered therein for activities contrary to the law and agrees to comply at all times with these general conditions.',
+      sections: {
+        accessConditions: {
+          title: 'FIRST – CONDITIONS OF ACCESS AND USE',
+          content: '1.1. The use of the website of Aceites Vicente Pérez S.L. does not require user registration, except when the USER wishes to use the database of articles available on aceitesreydonjaime.com, where registration through a basic form will be necessary. Such subscription shall be governed by its own specific conditions. The conditions of access to and use of this website are governed strictly by current legislation and by the principle of good faith, and the USER undertakes to make proper use of the website. All acts that violate the law, rights, or interests of third parties are expressly prohibited, including but not limited to: the right to privacy, data protection, and intellectual property. Aceites Vicente Pérez S.L. expressly prohibits the following: 1.1.1. Performing any actions on or through the website that may cause any kind of damage to the systems of Aceites Vicente Pérez S.L. or to third parties. 1.1.2. Carrying out, without due authorization, any kind of advertising or commercial information directly or covertly, sending mass emails ("spamming") or sending large messages in order to block network servers ("mail bombing"). 1.2. Aceites Vicente Pérez S.L. may interrupt access to its website at any time if it detects use contrary to the law, good faith, or these general conditions – see clause five.'
+        },
+        contents: {
+          title: 'SECOND – CONTENT',
+          content: 'The contents included on this website have been prepared and included by: 2.1. Aceites Vicente Pérez S.L., using both internal and external sources, in such a way that the company is solely responsible for internally produced content. 2.2. Aceites Vicente Pérez S.L. reserves the right to modify at any time the existing contents on its website.'
+        },
+        copyrights: {
+          title: 'THIRD – COPYRIGHT AND TRADEMARKS',
+          content: 'Aceites Vicente Pérez S.L. informs that the website aceitesreydonjaime.com, its own contents, programming, and design are fully protected by copyright, and any reproduction, communication, distribution, or transformation of the aforementioned protected elements is expressly prohibited without the prior written consent of Aceites Vicente Pérez S.L. Aceites Vicente Pérez S.L. occasionally uses external sources to create some of its content and may also establish links or hyperlinks to third-party articles or information, always citing the source. The legitimate holders of the copyright of such included information may request at any time the removal of the corresponding references.'
+        },
+        jurisdiction: {
+          title: 'FOURTH – JURISDICTION AND APPLICABLE LAW',
+          content: 'These general conditions are governed by Spanish law. The Courts and Tribunals of Valencia (Spain) shall have jurisdiction to resolve any dispute or conflict arising from these general conditions, and the USER expressly waives any other jurisdiction that may correspond to them.'
+        },
+        finalProvisions: {
+          title: 'FIFTH – SEVERABILITY',
+          content: 'In the event that any clause of this document is declared null and void, the remaining clauses shall remain valid and shall be interpreted taking into account the will of the parties and the purpose of these conditions. Aceites Vicente Pérez S.L. may choose not to exercise any of the rights or powers conferred in this document, which shall in no case imply a waiver of such rights unless expressly acknowledged in writing by Aceites Vicente Pérez S.L.'
+        }
+      },
+      closeButton: 'Close'
+    }
+  }
 };

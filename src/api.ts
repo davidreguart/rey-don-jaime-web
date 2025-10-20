@@ -14,6 +14,8 @@ export interface ApiProduct {
   descripcion_en?: string;
 }
 
+
+
 export const productApi = {
   async getProducts(): Promise<ApiProduct[]> {
     try {
